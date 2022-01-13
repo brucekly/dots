@@ -1,0 +1,24 @@
+[advice]
+	statusHints = false
+[alias]
+	l = log --graph --oneline
+	s = status
+	ca = !git add -A && git commit
+	amend = commit --amend --reuse-message=HEAD
+	contributors = shortlog --summary --numbered
+	whoami = config user.email
+	aliases = config --get-regexp alias
+[branch]
+	sort = -committerdate
+[push]
+	default = tracking
+[pull]
+	rebase = true
+[help]
+	autocorrect = 1
+[core]
+	excludesFile = ~/.gitignore
+[init]
+	defaultBranch = main
+[include]
+	path = .gitconfig.local

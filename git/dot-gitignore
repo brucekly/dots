@@ -1,0 +1,9 @@
+syntax: glob
+.#*
+[#]*#
+*~
+.*.sw?
+.sw?
+.DS_Store
+Desktop.ini
+tags

@@ -1,0 +1,43 @@
+# Completion
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
+autoload -Uz compinit && compinit
+
+# Prompt
+autoload -Uz vcs_info
+zstyle ':vcs_info:git:*' enable git svn
+zstyle ':vcs_info:git*' formats "(%b)"
+precmd() { vcs_info }
+setopt prompt_subst
+PROMPT='%F{cyan}%~%F{green}${vcs_info_msg_0_}%F{red}: %f'
+
+export EDITOR=vim
+export VISUAL=$EDITOR
+
+# zsh thinks EDITOR=vim means I want vim bindings
+bindkey -e
+
+function zle_eval {
+    echo -en "\e[2K\r"
+    eval "$@"
+    zle redisplay
+}
+
+function zle_fg {
+    zle_eval fg
+}
+
+zle -N zle_fg
+bindkey "^z" zle_fg
+
+export CLICOLOR=1
+
+alias frhist="cat ~/.zsh_history | sort | uniq -c | sort -rn | head"
+alias frhistc="cat ~/.zsh_history | sort | uniq -c | sort -rn | head"
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+alias e="$EDITOR"
+alias g="git"
+alias l="ls -al"
