@@ -27,7 +27,7 @@
     --pecan-border-radius: 0px;
     --pecan-border-radius-inner: 3px;
     /* typography */
-    --pecan-font: Iosevka Term, Menlo, Monospace;
+    --pecan-font: Iosevka Fixed, Menlo, Monospace;
     --pecan-font-size: 12px;
     --pecan-font-style: regular;
     --pecan-line-height: calc(var(--pecan-height) - calc(var(--pecan-border) * 2));

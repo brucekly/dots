@@ -51,7 +51,7 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-(set-frame-font "Iosevka Term 12")
+(set-frame-font "Iosevka Fixed 12")
 
 (use-package color-theme-sanityinc-tomorrow
   :config
