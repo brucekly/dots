@@ -244,7 +244,14 @@
 		TeX-source-correlate-mode t
 		TeX-source-correlate-start-server t))
 
-(setq python-shell-interpreter "python3")
+(use-package python
+  :config
+  (when (executable-find "ipython")
+    (setq python-shell-interpreter "ipython"
+	  python-shell-interpreter-args "-i --simple-prompt")))
+
+(use-package yapfify
+  :hook (python-mode . yapf-mode))
 
 (use-package company-jedi
   :init
