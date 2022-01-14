@@ -24,6 +24,11 @@
   (setq mac-pass-command-to-system nil)
   (menu-bar-mode t))
 
+(when window-system
+  (setq frame-title-format "%b")
+  (tooltip-mode -1)
+  (blink-cursor-mode -1))
+
 (setq ring-bell-function (lambda () nil))
 
 (setq delete-by-moving-to-trash t)
