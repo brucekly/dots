@@ -25,7 +25,8 @@
   (menu-bar-mode t))
 
 (when window-system
-  (setq frame-title-format "%b")
+  (setq frame-title-format "%b"
+	use-dialog-box nil)
   (tooltip-mode -1)
   (blink-cursor-mode -1))
 
