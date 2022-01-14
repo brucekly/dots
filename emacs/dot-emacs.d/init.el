@@ -214,7 +214,8 @@
 	 ("C-x M-g" . magit-dispatch)))
 
 (use-package projectile
-  :bind (("C-c p" . projectile-command-map))
+  :bind (("C-c p" . projectile-command-map)
+	 ("s-p" . projectile-command-map))
   :init
   (projectile-mode t))
 
