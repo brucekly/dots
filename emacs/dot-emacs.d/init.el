@@ -234,7 +234,6 @@
 		      :foreground nil)
   (setq font-latex-fontify-script nil
 	font-latex-fontify-sectioning 'color
-	TeX-auto-save t
 	TeX-parse-self t
 	TeX-save-query nil
 	TeX-view-program-selection '((output-pdf "PDF Viewer"))
