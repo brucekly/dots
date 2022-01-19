@@ -41,5 +41,6 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 
 alias e="$EDITOR"
+alias ec="emacsclient -n"
 alias g="git"
 alias l="ls -al"
