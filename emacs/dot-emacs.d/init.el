@@ -86,6 +86,10 @@
 
 (setq-default word-wrap t)
 
+(use-package windmove
+  :config
+  (windmove-default-keybindings))
+
 (defun goto-line-with-feedback ()
   "Show line numbers temporarily, while prompting for the line number input"
   (interactive)
