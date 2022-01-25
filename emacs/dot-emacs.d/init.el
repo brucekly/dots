@@ -149,6 +149,8 @@
       (forward-char 1)
       (just-one-space 1))))
 
+(setq compilation-ask-about-save nil)
+
 (use-package multiple-cursors
   :bind
   (("C-S-c C-S-c" . 'mc/edit-lines)
