@@ -81,8 +81,17 @@ set statusline+=\ %l:%c
 set statusline+=\ %P
 
 set termguicolors
-set background=dark
-color base16-tomorrow-night
+
+if has('macunix')
+    let theme = system('defaults read -g AppleInterfaceStyle')
+    if theme =~ 'Dark'
+        color base16-tomorrow-night
+    else
+        color base16-tomorrow
+    endif
+else
+    color base16-tomorrow-night
+endif
 
 " Fix true colours in tmux
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
