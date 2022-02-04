@@ -25,7 +25,7 @@
   (menu-bar-mode t))
 
 (when window-system
-  (setq frame-title-format "%b"
+  (setq frame-title-format nil
 	use-dialog-box nil)
   (tooltip-mode -1)
   (blink-cursor-mode -1))
@@ -59,9 +59,19 @@
 
 (set-frame-font "Iosevka Fixed 12")
 
+(defun my/mac-update-appearance ()
+  (interactive)
+  (if (string= (plist-get (mac-application-state) :appearance) "NSAppearanceNameAqua")
+      (load-theme 'sanityinc-tomorrow-day t)
+    (load-theme 'sanityinc-tomorrow-night t)))
+
+(add-hook 'mac-effective-appearance-change-hook #'my/mac-update-appearance)
+
 (use-package color-theme-sanityinc-tomorrow
   :config
-  (load-theme 'sanityinc-tomorrow-night t))
+  (if (eq system-type 'darwin)
+      (my/mac-update-appearance)
+    (load-theme 'sanityinc-tomorrow-dark t)))
 
 (setq show-paren-delay 0)
 (setq show-paren-style 'parenthesis)
