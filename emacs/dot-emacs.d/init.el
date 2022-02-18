@@ -156,26 +156,37 @@
   :init
   (global-company-mode t))
 
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file"
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
 
-(use-package vertico
-  :init
-  (vertico-mode t))
+(use-package recentf
+  :config
+  (global-set-key (kbd "C-x C-r") #'ido-recentf-open)
+  (setq recentf-max-saved-items 50)
+  (recentf-mode t))
 
-(use-package vertico-directory
-  :ensure nil
-  :bind (:map vertico-map
-              ("RET" . vertico-directory-enter)
-              ("DEL" . vertico-directory-delete-char)
-              ("M-DEL" . vertico-directory-delete-word)))
+(use-package ido
+  :config
+  (setq ido-enable-flex-matching t
+	ido-use-filename-at-point 'guess
+	ido-create-new-buffer 'always)
+  (ido-mode t)
+  (ido-everywhere t))
 
-(use-package marginalia
-  :init
-  (marginalia-mode t))
+(use-package ido-vertical-mode
+  :config
+  (ido-vertical-mode t))
+
+(use-package smex
+  :bind ("M-x" . smex))
+
+(use-package ido-completing-read+
+  :config
+  (ido-ubiquitous-mode 1))
 
 (use-package org
   :bind (("C-c a" . org-agenda)
@@ -205,7 +216,9 @@
 
 (use-package magit
   :bind (("C-x g" . magit)
-	 ("C-x M-g" . magit-dispatch)))
+	 ("C-x M-g" . magit-dispatch))
+  :config
+  (setq magit-completing-read-function 'magit-ido-completing-read))
 
 (use-package projectile
   :bind (("C-c p" . projectile-command-map)
