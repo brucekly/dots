@@ -70,9 +70,9 @@
 
 (set-frame-font "Iosevka Fixed 12")
 
-(use-package doom-themes
+(use-package color-theme-sanityinc-tomorrow
   :config
-  (load-theme 'doom-tomorrow-night t))
+  (load-theme 'sanityinc-tomorrow-night t))
 
 (setq show-paren-delay 0)
 (setq show-paren-style 'parenthesis)
