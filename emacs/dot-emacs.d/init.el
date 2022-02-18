@@ -1,3 +1,6 @@
+;; init.el
+;; -*- lexical-binding: t; -*-
+
 (require 'package)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -25,7 +28,7 @@
   (menu-bar-mode t))
 
 (when window-system
-  (setq frame-title-format nil
+  (setq frame-title-format "%b"
 	use-dialog-box nil)
   (tooltip-mode -1)
   (blink-cursor-mode -1))
@@ -42,6 +45,14 @@
 
 (setq backup-directory-alist
       `(("." . ,(expand-file-name "backups" user-emacs-directory))))
+
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+(setq gc-cons-threshold 100000000
+      read-process-output-max (* 1024 1024))
+
+(global-set-key (kbd "M-/") #'hippie-expand)
 
 (setq frame-resize-pixelwise t)
 
@@ -80,8 +91,6 @@
 (blink-cursor-mode 0)
 
 (setq-default indicate-empty-lines t)
-
-(global-hl-line-mode t)
 
 (line-number-mode t)
 (column-number-mode t)
@@ -135,23 +144,7 @@
     (error (message "Invalid expression")
 	   (insert (current-kill 0)))))
 
-(defun open-line-below ()
-  (interactive)
-  (end-of-line)
-  (newline)
-  (indent-for-tab-command))
-
-(defun open-line-above ()
-  (interactive)
-  (beginning-of-line)
-  (newline)
-  (forward-line -1)
-  (indent-for-tab-command))
-
-(global-set-key (kbd "<C-return>") 'open-line-below)
-(global-set-key (kbd "<C-S-return>") 'open-line-above)
-
-(global-set-key (kbd "C-c e") 'eval-and-replace)
+(global-set-key (kbd "C-c e") #'eval-and-replace)
 
 (defadvice kill-line (before kill-line-autoreindent activate)
   (when (and (eolp) (not (bolp)))
@@ -159,14 +152,9 @@
       (forward-char 1)
       (just-one-space 1))))
 
-(setq compilation-ask-about-save nil)
+(global-set-key (kbd "M-o") #'other-window)
 
-(use-package multiple-cursors
-  :bind
-  (("C-S-c C-S-c" . 'mc/edit-lines)
-   ("C->" . 'mc/mark-next-like-this)
-   ("C-<" . 'mc/mark-previous-like-this)
-   ("C-c C-<" . 'mc/mark-all-like-this)))
+(setq compilation-ask-about-save nil)
 
 (setq read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
@@ -216,14 +204,8 @@
 
 (use-package exec-path-from-shell
   :config
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize))
-  (when (daemonp)
+  (if (eq system-type 'darwin)
     (exec-path-from-shell-initialize)))
-
-(use-package dumb-jump
-  :config
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 (use-package smartparens
   :config
@@ -244,20 +226,17 @@
 (use-package tex
   :ensure auctex
   :hook (TeX-mode . LaTeX-math-mode)
-  :config
-  (require 'font-latex)
-  (set-face-attribute 'font-latex-script-char-face nil
-		      :foreground nil)
+  :init
   (setq font-latex-fontify-script nil
 	font-latex-fontify-sectioning 'color
 	TeX-parse-self t
 	TeX-save-query nil
 	TeX-view-program-selection '((output-pdf "PDF Viewer"))
 	TeX-view-program-list
-	'(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
-  (setq-default TeX-master nil
-		TeX-source-correlate-mode t
-		TeX-source-correlate-start-server t))
+	'(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
+	TeX-master nil
+	TeX-source-correlate-mode t
+	TeX-source-correlate-start-server t))
 
 (use-package python
   :config
