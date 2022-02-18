@@ -70,19 +70,9 @@
 
 (set-frame-font "Iosevka Fixed 12")
 
-(defun my/mac-update-appearance ()
-  (interactive)
-  (if (string= (plist-get (mac-application-state) :appearance) "NSAppearanceNameAqua")
-      (load-theme 'sanityinc-tomorrow-day t)
-    (load-theme 'sanityinc-tomorrow-night t)))
-
-(add-hook 'mac-effective-appearance-change-hook #'my/mac-update-appearance)
-
-(use-package color-theme-sanityinc-tomorrow
+(use-package doom-themes
   :config
-  (if (eq system-type 'darwin)
-      (my/mac-update-appearance)
-    (load-theme 'sanityinc-tomorrow-dark t)))
+  (load-theme 'doom-tomorrow-night t))
 
 (setq show-paren-delay 0)
 (setq show-paren-style 'parenthesis)
