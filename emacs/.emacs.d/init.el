@@ -85,7 +85,7 @@
 (line-number-mode t)
 (column-number-mode t)
 
-(require 'diminish)
+(use-package diminish)
 (eval-after-load "elisp-slime-nav" '(diminish #'elisp-slime-nav-mode))
 (eval-after-load "hindent" '(diminish #'hindent-mode))
 (eval-after-load "smartparens" '(diminish #'smartparens-mode))
