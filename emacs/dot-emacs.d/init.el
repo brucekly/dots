@@ -22,7 +22,7 @@
 ;; Mac-specific changes
 (when (eq system-type 'darwin)
   (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'super)
+  (setq mac-option-modifier 'none)
   (setq ns-function-modifier 'hyper)
   (setq mac-pass-command-to-system nil)
   (menu-bar-mode t))
@@ -221,8 +221,7 @@
   (setq magit-completing-read-function 'magit-ido-completing-read))
 
 (use-package projectile
-  :bind (("C-c p" . projectile-command-map)
-	 ("s-p" . projectile-command-map))
+  :bind ("C-c p" . projectile-command-map)
   :init
   (projectile-mode t))
 
