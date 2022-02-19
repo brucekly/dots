@@ -7,8 +7,8 @@ spacebar -m config title on
 
 spacebar -m config padding_left 20
 spacebar -m config padding_right 20
-spacebar -m config spacing_left 15
-spacebar -m config spacing_right 15
+spacebar -m config spacing_left 20
+spacebar -m config spacing_right 20
 
 spacebar -m config text_font "Iosevka Fixed:Regular:12.0"
 spacebar -m config icon_font "Iosevka Fixed:Regular:12.0"
@@ -35,6 +35,11 @@ spacebar -m config clock_format "%R, %a %d %B"
 spacebar -m config dnd on
 spacebar -m config dnd_icon DND
 spacebar -m config dnd_icon_color 0xffcc6666
+
+spacebar -m config left_shell on
+spacebar -m config left_shell_icon MUSIC
+spacebar -m config left_shell_icon_color 0xffb5bd68
+spacebar -m config left_shell_command "osascript ~/.config/spacebar/music"
 
 spacebar -m config right_shell on
 spacebar -m config right_shell_icon WIFI

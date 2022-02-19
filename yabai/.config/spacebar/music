@@ -1,0 +1,10 @@
+#!/usr/bin/osascript
+if application "Music" is running then
+   tell application "Music"
+   	if exists current track
+	    return name of current track
+	end if
+   end tell
+end if 
+
+return "Nothing playing"
