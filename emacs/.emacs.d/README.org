@@ -1,0 +1,359 @@
+#+TITLE: Emacs configuration
+
+* Starting up
+
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold 100000000
+	read-process-output-max (* 1024 1024))
+
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (unless (file-exists-p custom-file)
+    (with-temp-buffer (write-file custom-file)))
+  (load custom-file)
+
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+#+end_src
+
+* Appearance
+** Built in tweaks
+
+#+begin_src emacs-lisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  (setq inhibit-splash-screen t)
+
+  (when window-system
+    (setq frame-title-format "%b"
+	  use-dialog-box nil)
+    (tooltip-mode -1)
+    (blink-cursor-mode -1))
+
+  (setq show-paren-delay 0)
+  (show-paren-mode t)
+
+  (setq visual-line-fringe-indicators '(left-curly-arrow nil))
+  (global-visual-line-mode t)
+
+  (setq-default indicate-empty-lines t)
+
+  (line-number-mode t)
+  (column-number-mode t)
+
+  (setq frame-resize-pixelwise t)
+#+end_src
+
+** Theme
+
+Set a nice font and theme.
+
+#+begin_src emacs-lisp
+  (set-frame-font "Iosevka Fixed 12")
+
+  (use-package color-theme-sanityinc-tomorrow
+    :config
+    (load-theme 'sanityinc-tomorrow-night t))
+#+end_src
+
+* Defuns
+** Line numbers in =goto-line=
+
+http://whattheemacsd.com/key-bindings.el-01.html
+
+#+begin_src emacs-lisp
+  (global-set-key [remap goto-line] 'goto-line-with-feedback)
+
+  (defun goto-line-with-feedback ()
+    "Show line numbers temporarily, while prompting for the line number input"
+    (interactive)
+    (unwind-protect
+	(progn
+	  (display-line-numbers-mode 1)
+	  (goto-line (read-number "Goto line: ")))
+      (display-line-numbers-mode -1)))
+#+end_src
+
+** Switch to last buffer
+
+Similar to vim's =C-^=.
+
+#+begin_src emacs-lisp
+  (defun switch-to-last-buffer ()
+    (interactive)
+    (switch-to-buffer nil))
+
+  (global-set-key (kbd "C-<backspace>") #'switch-to-last-buffer)
+#+end_src
+
+** Jump to config
+
+#+begin_src emacs-lisp
+  (defun open-config ()
+    (interactive)
+    (find-file
+     (expand-file-name "README.org" user-emacs-directory)))
+
+  (global-set-key (kbd "C-c i") #'open-config)
+#+end_src
+
+** Eval and replace sexp
+
+https://emacsredux.com/blog/2013/06/21/eval-and-replace/
+
+#+begin_src emacs-lisp
+  (defun eval-and-replace ()
+    "Replace the preceding sexp with its value"
+    (interactive)
+    (backward-kill-sexp)
+    (condition-case nil
+	(prin1 (eval (read (current-kill 0)))
+	       (current-buffer))
+      (error (message "Invalid expression")
+	     (insert (current-kill 0)))))
+
+  (global-set-key (kbd "C-c e") #'eval-and-replace)
+#+end_src
+
+* General configuration
+** Misc
+
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (defalias 'list-buffers 'ibuffer)
+
+  (setq ring-bell-function (lambda () nil)
+	delete-by-moving-to-trash t
+	disabled-command-function nil
+	compilation-ask-about-save nil
+	vc-follow-symlinks t)
+#+end_src
+
+** Auto revert
+
+Automatically detect and load changes to files and dired buffers.
+
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+  (setq global-auto-revert-non-file-buffers t
+	auto-revert-verbose nil)
+#+end_src
+
+** Backups and saves
+
+Keep backups inside =~/.emacs.d/= instead of the working directory, and keep auto saves in a temporary directory.
+
+#+begin_src emacs-lisp
+  (setq backup-directory-alist
+	`(("." . ,(expand-file-name "backups" user-emacs-directory))))
+  (setq auto-save-file-name-transforms
+	`((".*" ,temporary-file-directory t)))
+#+end_src
+
+** Keybinds
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-/") #'hippie-expand)
+  (global-set-key (kbd "M-o") #'other-window)
+#+end_src
+
+** =exec-path-from-shell=
+
+Ensure environment variables in emacs match the user shell.
+
+#+begin_src emacs-lisp
+  (when (memq window-system '(mac ns x))
+    (use-package exec-path-from-shell
+      :config
+      (exec-path-from-shell-initialize)))
+#+end_src
+
+** Mac changes
+
+Use command as the meta key on macOS, and unbind option to make inserting special characters easier.
+Also enable the menu bar, since it doesn't take up extra room on macOS.
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta
+	  mac-option-modifier 'none
+	  ns-function-modifier 'hyper
+	  mac-pass-command-to-system nil)
+    (menu-bar-mode t))
+#+end_src
+
+** Command completion
+
+#+begin_src emacs-lisp
+  (use-package ido
+    :config
+    (setq ido-enable-flex-matching t
+	  ido-use-filename-at-point 'guess
+	  ido-create-new-buffer 'always
+	  read-file-name-completion-ignore-case t
+	  read-buffer-completion-ignore-case t
+	  completion-ignore-case t)
+    (ido-mode t)
+    (ido-everywhere t))
+
+  (use-package ido-vertical-mode
+    :config
+    (ido-vertical-mode t))
+
+  (use-package smex
+    :bind ("M-x" . smex))
+
+  (use-package ido-completing-read+
+    :config
+    (ido-ubiquitous-mode 1))
+#+end_src
+
+** Code completion
+
+#+begin_src emacs-lisp
+(use-package company
+    :config
+    (setq company-tooltip-align-annotations t
+	  company-format-margin-function #'company-text-icons-margin
+	  company-search-regexp-function #'company-search-flex-regexp)
+    (global-company-mode t))
+#+end_src
+
+** Recent files
+
+#+begin_src emacs-lisp
+  (use-package recentf
+    :config
+    (setq recentf-max-saved-items 50)
+    (recentf-mode t))
+
+  (defun ido-recentf-open ()
+    "Use `ido-completing-read' to \\[find-file] a recent file"
+    (interactive)
+    (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+	(message "Opening file...")
+      (message "Aborting")))
+
+  (global-set-key (kbd "C-x C-r") #'ido-recentf-open)
+#+end_src
+
+** Magit
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :bind (("C-x g" . magit)
+	   ("C-x M-g" . magit-dispatch))
+    :config
+    (setq magit-completing-read-function 'magit-ido-completing-read))
+#+end_src
+
+** Projectile
+
+#+begin_src emacs-lisp
+  (use-package projectile
+    :bind ("C-c p" . projectile-command-map)
+    :init
+    (projectile-mode t))
+#+end_src
+
+** Restclient
+
+#+begin_src emacs-lisp
+    (use-package restclient)
+
+    (use-package company-restclient
+      :config
+      (add-to-list 'company-backends 'company-restclient))
+#+end_src
+
+* Org
+
+#+begin_src emacs-lisp
+  (use-package org
+    :bind (("C-c a" . org-agenda)
+	   ("C-c c" . org-capture))
+    :config
+    (require 'org-tempo)
+    (setq calendar-week-start-day 1
+	  org-agenda-start-on-weekday 1
+	  org-adapt-indentation nil
+	  org-agenda-files (file-expand-wildcards
+			    "~/Dropbox/org/*.org"))
+    (add-to-list 'org-structure-template-alist
+		 '("el" . "src emacs-lisp")))
+#+end_src
+
+* Writing
+** LaTeX
+
+#+begin_src emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :hook ((TeX-mode . LaTeX-math-mode)
+	 (TeX-mode . reftex-mode))
+    :init
+    (setq font-latex-fontify-script nil
+	  font-latex-fontify-sectioning 'color
+	  TeX-parse-self t
+	  TeX-save-query nil
+	  TeX-view-program-selection '((output-pdf "PDF Viewer"))
+	  TeX-view-program-list
+	  '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
+	  TeX-master nil
+	  TeX-source-correlate-mode t
+	  TeX-source-correlate-start-server t))
+#+end_src
+
+* Coding
+** Python
+
+#+begin_src emacs-lisp
+    (use-package python
+      :config
+      (when (executable-find "ipython")
+	(setq python-shell-interpreter "ipython"
+	      python-shell-interpreter-args "-i --simple-prompt")))
+
+    (use-package company-jedi
+      :init
+      (add-to-list 'company-backends 'company-jedi)
+      (add-hook 'python-mode-hook 'jedi:setup)
+      (setq jedi:complete-on-dot t))
+#+end_src
+
+** Haskell
+
+#+begin_src emacs-lisp
+    (use-package haskell-mode
+      :hook (haskell-mode . interactive-haskell-mode)
+      :bind (:map haskell-mode-map
+		  ("C-c h" . haskell-hoogle))
+      :init
+      (setq haskell-hoogle-command "hoogle")
+      (require 'haskell-interactive-mode)
+      (require 'haskell-process))
+
+    (use-package hindent
+      :hook (haskell-mode . hindent-mode))
+
+    (use-package elisp-slime-nav
+      :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode))
+#+end_src
+
+** Lisp
+  
+#+begin_src emacs-lisp
+    (use-package slime
+      :config
+      (require 'slime-autoloads)
+      (slime-setup '(slime-fancy slime-company))
+      (setq slime-net-coding-system 'utf-8-unix)
+      (setq inferior-lisp-program "sbcl"))
+
+    (use-package slime-company
+      :after (slime company)
+      :config
+      (setq slime-company-completion 'fuzzy
+	    slime-company-after-completion 'slime-company-just-one-space))
+#+end_src

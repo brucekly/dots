@@ -1,7 +1,2 @@
-emacs/dot-emacs.d/*
-!emacs/dot-emacs.d/init.el
-!emacs/dot-emacs.d/lisp/vertico-directory.el
-!emacs/dot-emacs.d/snippets/
-
-python/dot-ipython/*
-python/dot-ipython/profile_default/ipython_config.py
+/emacs/.emacs.d/README.el
+/emacs/.emacs.d/README.elc
