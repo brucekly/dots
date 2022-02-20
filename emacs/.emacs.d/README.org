@@ -184,28 +184,82 @@ Also enable the menu bar, since it doesn't take up extra room on macOS.
 
 ** Command completion
 
+Selectrum is a lightweight completing UI, replacing =ido=, prescient is an alternative filtering and ordering system for commands, and marginalia shows extra minibuffer annotations.
+
 #+begin_src emacs-lisp
-  (use-package ido
+  (use-package selectrum
     :config
-    (setq ido-enable-flex-matching t
-	  ido-use-filename-at-point 'guess
-	  ido-create-new-buffer 'always
-	  read-file-name-completion-ignore-case t
-	  read-buffer-completion-ignore-case t
-	  completion-ignore-case t)
-    (ido-mode t)
-    (ido-everywhere t))
+    (selectrum-mode t))
 
-  (use-package ido-vertical-mode
+  (use-package selectrum-prescient
+    :after selectrum
     :config
-    (ido-vertical-mode t))
+    (selectrum-prescient-mode t)
+    (prescient-persist-mode t))
 
-  (use-package smex
-    :bind ("M-x" . smex))
-
-  (use-package ido-completing-read+
+  (use-package marginalia
     :config
-    (ido-ubiquitous-mode 1))
+    (marginalia-mode t))
+#+end_src
+
+Consult provides a lot of useful commands based on =completing-read=.
+The package =consult-dir= provides a directory jumper, like =z= in the shell, but in emacs.
+Consult comes with a binding to search =flymake= errors, but I use =flycheck= instead.
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :bind (("C-x b" . consult-buffer)
+	   ("M-y" . consult-yank-pop)
+	   ("<help> a" . consult-apropos)
+	   ("M-g e" . consult-compile-error)
+	   ("M-g g" . consult-goto-line)
+	   ("M-g M-g" . consult-goto-line)
+	   ("M-g o" . consult-outline)
+	   ("M-g m" . consult-mark)
+	   ("M-g k" . consult-global-mark)
+	   ("M-g i" . consult-imenu)
+	   ("M-g I" . consult-imenu-multi)
+	   ("M-s e" . consult-isearch-history)
+	   :map isearch-mode-map
+	   ("M-e" . consult-isearch-history)
+	   ("M-s e" . consult-isearch-history)
+	   ("M-s l" . consult-line)
+	   ("M-s L" . consult-line-multi))
+    :init
+    (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+    (setq xref-show-xrefs-function #'consult-xref
+	  xref-show-definitions-function #'consult-xref))
+
+  (use-package consult-dir
+    :after consult
+    :bind (("C-x C-d" . consult-dir)
+	   :map minibuffer-local-completion-map
+	   ("C-x C-d" . consult-dir)
+	   ("C-x C-j" . consult-dir-jump-file))
+    :config
+    (setq consult-dir-project-list-function nil
+	  consult-dir-project-list-function #'consult-dir-projectile-dirs))
+
+  (use-package consult-flycheck
+    :after consult
+    :bind ("M-g f" . consult-flycheck))
+#+end_src
+
+Embark provides a contextual menu for emacs which integrates with consult.
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("M-." . embark-dwim)
+     ("C-h B" . embark-bindings))
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command))
+
+  (use-package embark-consult
+    :after (embark consult)
+    :demand t
+    :hook (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
 ** Code completion
@@ -226,15 +280,6 @@ Also enable the menu bar, since it doesn't take up extra room on macOS.
     :config
     (setq recentf-max-saved-items 50)
     (recentf-mode t))
-
-  (defun ido-recentf-open ()
-    "Use `ido-completing-read' to \\[find-file] a recent file"
-    (interactive)
-    (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-	(message "Opening file...")
-      (message "Aborting")))
-
-  (global-set-key (kbd "C-x C-r") #'ido-recentf-open)
 #+end_src
 
 ** Magit
