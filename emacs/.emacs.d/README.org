@@ -335,7 +335,7 @@ Embark provides a contextual menu for emacs which integrates with consult.
   (use-package tex
     :ensure auctex
     :hook ((TeX-mode . LaTeX-math-mode)
-	 (TeX-mode . reftex-mode))
+	   (TeX-mode . reftex-mode))
     :init
     (setq font-latex-fontify-script nil
 	  font-latex-fontify-sectioning 'color
