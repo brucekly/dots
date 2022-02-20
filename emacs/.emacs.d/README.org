@@ -126,8 +126,7 @@ https://emacsredux.com/blog/2013/06/21/eval-and-replace/
   (setq ring-bell-function (lambda () nil)
 	delete-by-moving-to-trash t
 	disabled-command-function nil
-	compilation-ask-about-save nil
-	vc-follow-symlinks t)
+	compilation-ask-about-save nil)
 #+end_src
 
 ** Auto revert
