@@ -10,6 +10,8 @@
 	aliases = config --get-regexp alias
 [branch]
 	sort = -committerdate
+[commit]
+	gpgsign = true
 [push]
 	default = tracking
 [pull]

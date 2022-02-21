@@ -15,6 +15,8 @@ PROMPT='%F{cyan}%~%F{green}${vcs_info_msg_0_}%F{red}: %f'
 export EDITOR=vim
 export VISUAL=$EDITOR
 
+export GPG_TTY=$(tty)
+
 # zsh thinks EDITOR=vim means I want vim bindings
 bindkey -e
 
