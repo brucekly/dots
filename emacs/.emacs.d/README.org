@@ -394,8 +394,12 @@ I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 	  send-mail-function 'smtpmail-send-it
 	  message-send-mail-function 'message-send-mail-with-sendmail)
 
+    (setq mu4e-update-interval (* 60 15))
+
     (setq mu4e-change-filenames-when-moving t)
-    (setq message-kill-buffer-on-exit t))
+    (setq message-kill-buffer-on-exit t)
+
+    (mu4e t))
 #+end_src
 
 Also add an indicator to the modeline when I have new mail.
