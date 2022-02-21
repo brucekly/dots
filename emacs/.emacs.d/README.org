@@ -15,6 +15,13 @@
   (setq use-package-always-ensure t)
 #+end_src
 
+Set personal information.
+
+#+begin_src emacs-lisp
+  (setq user-mail-address "lucy.mcphail.p@gmail.com"
+	user-full-name "Lucy McPhail")
+#+end_src
+
 * Appearance
 ** Built in tweaks
 
