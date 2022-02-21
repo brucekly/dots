@@ -335,6 +335,86 @@ Embark provides a contextual menu for emacs which integrates with consult.
 		 '("el" . "src emacs-lisp")))
 #+end_src
 
+* Mail
+
+I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
+
+#+begin_src emacs-lisp
+    (use-package mu4e
+      :ensure nil
+      :config
+      (setq mail-user-agent 'mu4e-user-agent)
+
+      (setq mu4e-completing-read-function #'selectrum-completing-read)
+
+      (setq mu4e-sent-folder "/gmail/[Gmail]/Sent Mail"
+	    mu4e-trash-folder "/gmail/[Gmail]/Trash"
+	    mu4e-drafts-folder "/gmail/[Gmail]/Drafts")
+
+      (setq mu4e-maildir-shortcuts
+	    '((:maildir "/gmail/INBOX" :key ?i)
+	      (:maildir "/gmail/[Gmail]/Sent Mail" :key ?s)
+	      (:maildir "/gmail/[Gmail]/Trash" :key ?t)
+	      (:maildir "/gmail/[Gmail]/All Mail" :key ?a)
+	      (:maildir "/university/Inbox" :key ?I)
+	      (:maildir "/university/Sent Items" :key ?S)
+	      (:maildir "/university/Deleted Items" :key ?T)
+	      (:maildir "/university/Archive" :key ?A)))
+
+      (setq mu4e-contexts
+	    (list (make-mu4e-context
+		   :name "personal"
+		   :match-func
+		   (lambda (msg) (when msg (string-prefix-p "/gmail/[Gmail]" (mu4e-message-field msg :maildir))))
+		   :vars '((mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
+			   (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
+			   (mu4e-refile-folder . "/gmail/[Gmail]/Archive")
+			   (mu4e-sent-messages-behavior . delete)))
+		  (make-mu4e-context
+		   :name "university"
+		   :match-func
+		   (lambda (msg) (when msg (string-prefix-p "/university" (mu4e-message-field msg :maildir))))
+		   :vars '((user-mail-address . "s2079454@ed.ac.uk")
+			   (mu4e-sent-folder . "/university/Sent Items")
+			   (mu4e-trash-folder . "/university/Deleted Items")
+			   (mu4e-refile-folder . "/university/Archive")
+			   (mu4e-sent-messages-behavior . sent)))))
+
+      (setq mu4e-context-policy 'pick-first
+	    mu4e-compose-context-policy 'always-ask)
+
+      (setq mu4e-get-mail-command "mbsync -a")
+
+      (require 'smtpmail)
+      (setq sendmail-program "msmtp"
+	    message-sendmail-f-is-evil t
+	    message-sendmail-extra-arguments '("--read-envelope-from")
+	    send-mail-function 'smtpmail-send-it
+	    message-send-mail-function 'message-send-mail-with-sendmail)
+
+      (setq mu4e-change-filenames-when-moving t)
+      (setq message-kill-buffer-on-exit t))
+#+end_src
+
+Also add an indicator to the modeline when I have new mail.
+
+#+begin_src emacs-lisp
+  (use-package mu4e-alert
+    :after mu4e
+    :init
+    (setq mu4e-alert-interesting-mail-query
+      (concat
+       "flag:unread maildir:/university/Inbox "
+       "OR "
+       "flag:unread maildir:/gmail/[Gmail]/INBOX"))
+    (setq mu4e-alert-modeline-formatter
+	  (lambda (mail-count)
+	    (if (not (zerop mail-count))
+		(format "[mail: %d]" mail-count)
+	      " ")))
+    (mu4e-alert-enable-mode-line-display))
+#+end_src
+
 * Writing
 ** LaTeX
 
