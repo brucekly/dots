@@ -35,6 +35,10 @@ bindkey "^z" zle_fg
 
 export CLICOLOR=1
 
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
 alias frhist="cat ~/.zsh_history | sort | uniq -c | sort -rn | head"
 alias frhistc="cat ~/.zsh_history | sort | uniq -c | sort -rn | head"
 
