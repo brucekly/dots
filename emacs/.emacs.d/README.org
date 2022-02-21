@@ -294,9 +294,7 @@ Embark provides a contextual menu for emacs which integrates with consult.
 #+begin_src emacs-lisp
   (use-package magit
     :bind (("C-x g" . magit)
-	   ("C-x M-g" . magit-dispatch))
-    :config
-    (setq magit-completing-read-function 'magit-ido-completing-read))
+	   ("C-x M-g" . magit-dispatch)))
 #+end_src
 
 ** Projectile
