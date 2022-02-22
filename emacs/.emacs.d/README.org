@@ -377,7 +377,8 @@ I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 		 :name "personal"
 		 :match-func
 		 (lambda (msg) (when msg (string-prefix-p "/gmail/[Gmail]" (mu4e-message-field msg :maildir))))
-		 :vars '((mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
+		 :vars '((user-mail-address . "lucy.mcphail.p@gmail.com")
+			 (mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
 			 (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
 			 (mu4e-refile-folder . "/gmail/[Gmail]/Archive")
 			 (mu4e-sent-messages-behavior . delete)))
