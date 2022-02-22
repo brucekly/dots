@@ -190,6 +190,16 @@ Also enable the menu bar, since it doesn't take up extra room on macOS.
     (menu-bar-mode t))
 #+end_src
 
+** Whitespace cleanup
+
+Clean whitespace on save, but only if it was already clean to avoid messy diffs.
+
+#+begin_src emacs-lisp
+  (use-package whitespace-cleanup-mode
+    :config
+    (global-whitespace-cleanup-mode t))
+#+end_src
+
 ** Command completion
 
 Selectrum is a lightweight completing UI, replacing =ido=, prescient is an alternative filtering and ordering system for commands, and marginalia shows extra minibuffer annotations.
