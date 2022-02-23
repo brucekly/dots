@@ -403,10 +403,7 @@ I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 
     (setq mu4e-bookmarks
 	  '((:name "Unified inbox"
-		   :query
-		   (concat "maildir:/gmail/INBOX "
-			   "OR "
-			   "maildir:/university/Inbox")
+		   :query "maildir:/gmail/INBOX OR maildir:/university/Inbox"
 		   :key ?i)
 	    (:name "Today's messages" :query "date:today..now" :key ?t)
 	    (:name "Last 7 days" :query "date:7d..now" :hide-unread t :key ?w)))
