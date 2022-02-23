@@ -426,7 +426,8 @@ I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 
     (setq mu4e-headers-include-related nil
 	  mu4e-hide-index-messages t
-	  mu4e-compose-dont-reply-to-self t)
+	  mu4e-compose-dont-reply-to-self t
+	  mu4e-attachment-dir  "~/Downloads")
 
     (setq mu4e-confirm-quit nil)
 
