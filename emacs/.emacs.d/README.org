@@ -283,12 +283,12 @@ Embark provides a contextual menu for emacs which integrates with consult.
 ** Code completion
 
 #+begin_src emacs-lisp
-(use-package company
-    :config
-    (setq company-tooltip-align-annotations t
-	  company-format-margin-function #'company-text-icons-margin
-	  company-search-regexp-function #'company-search-flex-regexp)
-    (global-company-mode t))
+  (use-package company
+      :config
+      (setq company-tooltip-align-annotations t
+	    company-format-margin-function #'company-text-icons-margin
+	    company-search-regexp-function #'company-search-flex-regexp)
+      (global-company-mode t))
 #+end_src
 
 ** Recent files
@@ -320,11 +320,12 @@ Embark provides a contextual menu for emacs which integrates with consult.
 ** Restclient
 
 #+begin_src emacs-lisp
-    (use-package restclient)
+  (use-package restclient)
 
-    (use-package company-restclient
-      :config
-      (add-to-list 'company-backends 'company-restclient))
+  (use-package company-restclient
+    :after (company restclient)
+    :config
+    (add-to-list 'company-backends 'company-restclient))
 #+end_src
 
 * Org
@@ -509,35 +510,35 @@ Also add an indicator to the modeline when I have new mail.
 ** Haskell
 
 #+begin_src emacs-lisp
-    (use-package haskell-mode
-      :hook (haskell-mode . interactive-haskell-mode)
-      :bind (:map haskell-mode-map
-		  ("C-c h" . haskell-hoogle))
-      :init
-      (setq haskell-hoogle-command "hoogle")
-      (require 'haskell-interactive-mode)
-      (require 'haskell-process))
+  (use-package haskell-mode
+    :hook (haskell-mode . interactive-haskell-mode)
+    :bind (:map haskell-mode-map
+		("C-c h" . haskell-hoogle))
+    :init
+    (setq haskell-hoogle-command "hoogle")
+    (require 'haskell-interactive-mode)
+    (require 'haskell-process))
 
-    (use-package hindent
-      :hook (haskell-mode . hindent-mode))
+  (use-package hindent
+    :hook (haskell-mode . hindent-mode))
 
-    (use-package elisp-slime-nav
-      :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode))
+  (use-package elisp-slime-nav
+    :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode))
 #+end_src
 
 ** Lisp
 
 #+begin_src emacs-lisp
-    (use-package slime
-      :config
-      (require 'slime-autoloads)
-      (slime-setup '(slime-fancy slime-company))
-      (setq slime-net-coding-system 'utf-8-unix)
-      (setq inferior-lisp-program "sbcl"))
+  (use-package slime
+    :config
+    (require 'slime-autoloads)
+    (slime-setup '(slime-fancy slime-company))
+    (setq slime-net-coding-system 'utf-8-unix)
+    (setq inferior-lisp-program "sbcl"))
 
-    (use-package slime-company
-      :after (slime company)
-      :config
-      (setq slime-company-completion 'fuzzy
-	    slime-company-after-completion 'slime-company-just-one-space))
+  (use-package slime-company
+    :after (slime company)
+    :config
+    (setq slime-company-completion 'fuzzy
+	  slime-company-after-completion 'slime-company-just-one-space))
 #+end_src
