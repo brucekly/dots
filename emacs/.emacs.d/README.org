@@ -428,7 +428,7 @@ Also add an indicator to the modeline when I have new mail.
     (setq mu4e-alert-modeline-formatter
 	  (lambda (mail-count)
 	    (if (not (zerop mail-count))
-		(format "[mail: %d]" mail-count)
+		(format "[Mail %d] " mail-count)
 	      " ")))
     (mu4e-alert-enable-mode-line-display))
 #+end_src
