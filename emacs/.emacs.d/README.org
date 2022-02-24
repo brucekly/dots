@@ -431,6 +431,11 @@ I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 
     (setq mu4e-confirm-quit nil)
 
+    ;; prefer plain text
+    (with-eval-after-load "mm-decode"
+      (add-to-list 'mm-discouraged-alternatives "text/html")
+      (add-to-list 'mm-discouraged-alternatives "text/richtext"))
+
     (mu4e t))
 #+end_src
 
