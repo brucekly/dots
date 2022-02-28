@@ -510,6 +510,10 @@ Also add an indicator to the modeline when I have new mail.
     (when (executable-find "ipython")
       (setq python-shell-interpreter "ipython"
 	    python-shell-interpreter-args "-i --simple-prompt")))
+
+  (use-package lsp-pyright
+    :hook (python-mode . (lambda ()
+			   (require 'lsp-pyright) (lsp-deferred))))
 #+end_src
 
 ** Haskell
