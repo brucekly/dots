@@ -92,18 +92,6 @@ http://whattheemacsd.com/key-bindings.el-01.html
       (display-line-numbers-mode -1)))
 #+end_src
 
-** Switch to last buffer
-
-Similar to vim's =C-^=.
-
-#+begin_src emacs-lisp
-  (defun switch-to-last-buffer ()
-    (interactive)
-    (switch-to-buffer nil))
-
-  (global-set-key (kbd "C-<backspace>") #'switch-to-last-buffer)
-#+end_src
-
 ** Jump to config
 
 #+begin_src emacs-lisp
