@@ -492,6 +492,12 @@ Also add an indicator to the modeline when I have new mail.
     :commands (lsp lsp-deferred)
     :init
     (setq lsp-headerline-breadcrumb-enable nil
+	  lsp-ui-doc-enable nil
+	  lsp-ui-doc-show-with-cursor nil
+	  lsp-eldoc-enable-hover nil
+	  lsp-signature-auto-activate nil
+	  lsp-lens-enable nil
+	  lsp-completion-provider :none
 	  lsp-modeline-code-actions-enable nil)
     :config
     (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
