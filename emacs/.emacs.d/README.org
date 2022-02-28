@@ -57,7 +57,17 @@ Set personal information.
 Set a nice font and theme.
 
 #+begin_src emacs-lisp
-  (set-frame-font "Iosevka Fixed 12")
+  (set-face-attribute 'default nil
+		      :family "Iosevka Fixed"
+		      :height 120)
+
+  (set-face-attribute 'fixed-pitch nil
+		      :family "Iosevka Fixed"
+		      :height 120)
+
+  (set-face-attribute 'variable-pitch nil
+		      :family "Source Sans Pro"
+		      :height 130)
 
   (use-package color-theme-sanityinc-tomorrow
     :config
