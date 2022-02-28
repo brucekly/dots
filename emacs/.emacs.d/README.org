@@ -202,18 +202,15 @@ Clean whitespace on save, but only if it was already clean to avoid messy diffs.
 
 ** Command completion
 
-Selectrum is a lightweight completing UI, replacing =ido=, prescient is an alternative filtering and ordering system for commands, and marginalia shows extra minibuffer annotations.
+Vertico is a lightweight completion UI.
 
 #+begin_src emacs-lisp
-  (use-package selectrum
+  (use-package vertico
     :config
-    (selectrum-mode t))
+    (vertico-mode t))
 
-  (use-package selectrum-prescient
-    :after selectrum
-    :config
-    (selectrum-prescient-mode t)
-    (prescient-persist-mode t))
+  (use-package orderless
+    :custom (completion-styles '(orderless)))
 
   (use-package marginalia
     :config
@@ -280,15 +277,14 @@ Embark provides a contextual menu for emacs which integrates with consult.
     :hook (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
-** Code completion
+Corfu displays completion-at-point results in a child frame.
 
 #+begin_src emacs-lisp
-  (use-package company
-      :config
-      (setq company-tooltip-align-annotations t
-	    company-format-margin-function #'company-text-icons-margin
-	    company-search-regexp-function #'company-search-flex-regexp)
-      (global-company-mode t))
+  (use-package corfu
+    :init
+    (corfu-global-mode))
+
+  (setq tab-always-indent 'complete)
 #+end_src
 
 ** Recent files
@@ -321,11 +317,6 @@ Embark provides a contextual menu for emacs which integrates with consult.
 
 #+begin_src emacs-lisp
   (use-package restclient)
-
-  (use-package company-restclient
-    :after (company restclient)
-    :config
-    (add-to-list 'company-backends 'company-restclient))
 #+end_src
 
 * Org
@@ -539,10 +530,4 @@ Also add an indicator to the modeline when I have new mail.
     (slime-setup '(slime-fancy slime-company))
     (setq slime-net-coding-system 'utf-8-unix)
     (setq inferior-lisp-program "sbcl"))
-
-  (use-package slime-company
-    :after (slime company)
-    :config
-    (setq slime-company-completion 'fuzzy
-	  slime-company-after-completion 'slime-company-just-one-space))
 #+end_src
