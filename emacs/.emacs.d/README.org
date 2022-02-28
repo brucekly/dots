@@ -463,6 +463,30 @@ Also add an indicator to the modeline when I have new mail.
     (mu4e-alert-enable-mode-line-display))
 #+end_src
 
+Check that I've attached something before sending a message if I've said I will.
+
+#+begin_src emacs-lisp
+  (defun message-attachment-present-p ()
+    (save-excursion
+      (save-restriction
+	(widen)
+	(goto-char (point-min))
+	(when (search-forward "<#part type" nil t) t))))
+
+  (defun message-warn-if-no-attachments ()
+    (when (and
+	   (save-excursion
+	     (save-restriction
+	       (widen)
+	       (goto-char (point-min))
+	       (re-search-forward "attach" nil t)))
+	   (not (message-attachment-present-p)))
+      (unless (y-or-n-p "No attachment. Send the message?")
+	(keyboard-quit))))
+
+  (add-hook 'message-send-hook #'message-warn-if-no-attachments)
+#+end_src
+
 * Writing
 ** LaTeX
 
