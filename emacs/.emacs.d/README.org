@@ -132,7 +132,8 @@ https://emacsredux.com/blog/2013/06/21/eval-and-replace/
 	delete-by-moving-to-trash t
 	disabled-command-function nil
 	compilation-ask-about-save nil
-	message-kill-buffer-on-exit t)
+	message-kill-buffer-on-exit t
+	sentence-end-double-space nil)
 #+end_src
 
 ** Auto revert
