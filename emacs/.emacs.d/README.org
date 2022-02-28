@@ -198,7 +198,7 @@ Clean whitespace on save, but only if it was already clean to avoid messy diffs.
     (global-whitespace-cleanup-mode t))
 #+end_src
 
-** Command completion
+** Completion
 
 Vertico is a lightweight completion UI.
 
@@ -216,8 +216,6 @@ Vertico is a lightweight completion UI.
 #+end_src
 
 Consult provides a lot of useful commands based on =completing-read=.
-The package =consult-dir= provides a directory jumper, like =z= in the shell, but in emacs.
-Consult comes with a binding to search =flymake= errors, but I use =flycheck= instead.
 
 #+begin_src emacs-lisp
   (use-package consult
@@ -232,6 +230,16 @@ Consult comes with a binding to search =flymake= errors, but I use =flycheck= in
 	   ("M-g k" . consult-global-mark)
 	   ("M-g i" . consult-imenu)
 	   ("M-g I" . consult-imenu-multi)
+	   ("M-s d" . consult-find)
+	   ("M-s D" . consult-locate)
+	   ("M-s g" . consult-grep)
+	   ("M-s G" . consult-git-grep)
+	   ("M-s r" . consult-ripgrep)
+	   ("M-s l" . consult-line)
+	   ("M-s L" . consult-line-multi)
+	   ("M-s m" . consult-multi-occur)
+	   ("M-s k" . consult-keep-lines)
+	   ("M-s u" . consult-focus-lines)
 	   ("M-s e" . consult-isearch-history)
 	   :map isearch-mode-map
 	   ("M-e" . consult-isearch-history)
@@ -241,8 +249,15 @@ Consult comes with a binding to search =flymake= errors, but I use =flycheck= in
     :init
     (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
     (setq xref-show-xrefs-function #'consult-xref
-	  xref-show-definitions-function #'consult-xref))
+	  xref-show-definitions-function #'consult-xref)
+    (setq consult-project-function (lambda (_) (projectile-project-root))))
+#+end_src
 
+Load some consult extensions.
+The package =consult-dir= provides a directory jumper, like =z= in the shell, but for emacs.
+Consult comes with a binding to search =flymake= errors, but I use =flycheck= instead.
+
+#+begin_src elisp
   (use-package consult-dir
     :after consult
     :bind (("C-x C-d" . consult-dir)
