@@ -129,11 +129,12 @@ https://emacsredux.com/blog/2013/06/21/eval-and-replace/
   (defalias 'list-buffers 'ibuffer)
 
   (setq ring-bell-function (lambda () nil)
-	delete-by-moving-to-trash t
-	disabled-command-function nil
-	compilation-ask-about-save nil
-	message-kill-buffer-on-exit t
-	sentence-end-double-space nil)
+        delete-by-moving-to-trash t
+        disabled-command-function nil
+        compilation-ask-about-save nil
+        message-kill-buffer-on-exit t
+        sentence-end-double-space nil
+        confirm-kill-emacs #'y-or-n-p)
 #+end_src
 
 ** Auto revert
