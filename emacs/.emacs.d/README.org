@@ -222,36 +222,37 @@ Consult provides a lot of useful commands based on =completing-read=.
 #+begin_src emacs-lisp
   (use-package consult
     :bind (("C-x b" . consult-buffer)
-	   ("M-y" . consult-yank-pop)
-	   ("<help> a" . consult-apropos)
-	   ("M-g e" . consult-compile-error)
-	   ("M-g g" . consult-goto-line)
-	   ("M-g M-g" . consult-goto-line)
-	   ("M-g o" . consult-outline)
-	   ("M-g m" . consult-mark)
-	   ("M-g k" . consult-global-mark)
-	   ("M-g i" . consult-imenu)
-	   ("M-g I" . consult-imenu-multi)
-	   ("M-s d" . consult-find)
-	   ("M-s D" . consult-locate)
-	   ("M-s g" . consult-grep)
-	   ("M-s G" . consult-git-grep)
-	   ("M-s r" . consult-ripgrep)
-	   ("M-s l" . consult-line)
-	   ("M-s L" . consult-line-multi)
-	   ("M-s m" . consult-multi-occur)
-	   ("M-s k" . consult-keep-lines)
-	   ("M-s u" . consult-focus-lines)
-	   ("M-s e" . consult-isearch-history)
-	   :map isearch-mode-map
-	   ("M-e" . consult-isearch-history)
-	   ("M-s e" . consult-isearch-history)
-	   ("M-s l" . consult-line)
-	   ("M-s L" . consult-line-multi))
+           ("M-y" . consult-yank-pop)
+           ("<help> a" . consult-apropos)
+           ("M-g e" . consult-compile-error)
+           ("M-g g" . consult-goto-line)
+           ("M-g M-g" . consult-goto-line)
+           ("M-g o" . consult-outline)
+           ("M-g m" . consult-mark)
+           ("M-g k" . consult-global-mark)
+           ("M-g i" . consult-imenu)
+           ("M-g I" . consult-imenu-multi)
+           ("M-g f" . consult-flymake)
+           ("M-s d" . consult-find)
+           ("M-s D" . consult-locate)
+           ("M-s g" . consult-grep)
+           ("M-s G" . consult-git-grep)
+           ("M-s r" . consult-ripgrep)
+           ("M-s l" . consult-line)
+           ("M-s L" . consult-line-multi)
+           ("M-s m" . consult-multi-occur)
+           ("M-s k" . consult-keep-lines)
+           ("M-s u" . consult-focus-lines)
+           ("M-s e" . consult-isearch-history)
+           :map isearch-mode-map
+           ("M-e" . consult-isearch-history)
+           ("M-s e" . consult-isearch-history)
+           ("M-s l" . consult-line)
+           ("M-s L" . consult-line-multi))
     :init
     (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
     (setq xref-show-xrefs-function #'consult-xref
-	  xref-show-definitions-function #'consult-xref)
+          xref-show-definitions-function #'consult-xref)
     (setq consult-project-function (lambda (_) (projectile-project-root))))
 #+end_src
 
@@ -269,10 +270,6 @@ Consult comes with a binding to search =flymake= errors, but I use =flycheck= in
     :config
     (setq consult-dir-project-list-function nil
 	  consult-dir-project-list-function #'consult-dir-projectile-dirs))
-
-  (use-package consult-flycheck
-    :after consult
-    :bind ("M-g f" . consult-flycheck))
 #+end_src
 
 Embark provides a contextual menu for emacs which integrates with consult.
@@ -489,67 +486,54 @@ Check that I've attached something before sending a message if I've said I will.
   (add-hook 'message-send-hook #'message-warn-if-no-attachments)
 #+end_src
 
-* Writing
-** LaTeX
-
-#+begin_src emacs-lisp
-  (use-package tex
-    :ensure auctex
-    :hook ((TeX-mode . LaTeX-math-mode)
-	   (TeX-mode . reftex-mode))
-    :init
-    (setq font-latex-fontify-script nil
-	  font-latex-fontify-sectioning 'color
-	  TeX-parse-self t
-	  TeX-save-query nil
-	  TeX-view-program-selection '((output-pdf "PDF Viewer"))
-	  TeX-view-program-list
-	  '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
-	  TeX-master nil
-	  TeX-source-correlate-mode t
-	  TeX-source-correlate-start-server t))
-#+end_src
-
 * Coding
 ** LSP
 
 #+begin_src emacs-lisp
-  (use-package flycheck
-    :commands flycheck-mode)
-
-  (use-package lsp-mode
-    :after (flycheck company)
-    :commands (lsp lsp-deferred)
-    :init
-    (setq lsp-headerline-breadcrumb-enable nil
-	  lsp-ui-doc-enable nil
-	  lsp-ui-doc-show-with-cursor nil
-	  lsp-eldoc-enable-hover nil
-	  lsp-signature-auto-activate nil
-	  lsp-lens-enable nil
-	  lsp-completion-provider :none
-	  lsp-modeline-code-actions-enable nil)
+  (use-package yasnippet
     :config
-    (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
+    (yas-global-mode t))
 
-  (use-package lsp-ui
-    :commands lsp-ui-mode
-    :after lsp-mode)
+  (use-package eglot
+    :bind (:map eglot-mode-map
+                ("C-c r" . eglot-rename)
+                ("C-c o" . eglot-code-action-organize-imports)
+                ("C-c h" . eldoc))
+    :config
+    (setq eldoc-echo-area-use-multiline-p nil)
+    (define-key eglot-mode-map [remap display-local-help] nil))
 #+end_src
 
 ** Python
 
 #+begin_src emacs-lisp
   (use-package python
-    :hook (python-mode . lsp-deferred)
+    :hook (python-mode . eglot-ensure)
     :config
     (when (executable-find "ipython")
       (setq python-shell-interpreter "ipython"
-	    python-shell-interpreter-args "-i --simple-prompt")))
+            python-shell-interpreter-args "-i --simple-prompt")))
+#+end_src
 
-  (use-package lsp-pyright
-    :hook (python-mode . (lambda ()
-			   (require 'lsp-pyright) (lsp-deferred))))
+** LaTeX
+
+#+begin_src emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :hook ((TeX-mode . LaTeX-math-mode)
+           (TeX-mode . reftex-mode)
+           (TeX-mode . eglot-ensure))
+    :init
+    (setq font-latex-fontify-script nil
+          font-latex-fontify-sectioning 'color
+          TeX-parse-self t
+          TeX-save-query nil
+          TeX-view-program-selection '((output-pdf "PDF Viewer"))
+          TeX-view-program-list
+          '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b"))
+          TeX-master nil
+          TeX-source-correlate-mode t
+          TeX-source-correlate-start-server t))
 #+end_src
 
 ** Haskell
