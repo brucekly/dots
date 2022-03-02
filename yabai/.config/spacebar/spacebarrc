@@ -36,11 +36,6 @@ spacebar -m config dnd on
 spacebar -m config dnd_icon DND
 spacebar -m config dnd_icon_color 0xffcc6666
 
-spacebar -m config left_shell on
-spacebar -m config left_shell_icon MUSIC
-spacebar -m config left_shell_icon_color 0xffb5bd68
-spacebar -m config left_shell_command "echo $(osascript ~/.config/spacebar/music)"
-
 spacebar -m config right_shell on
 spacebar -m config right_shell_icon WIFI
 spacebar -m config right_shell_icon_color 0xff8abeb7
@@ -48,5 +43,10 @@ spacebar -m config right_shell_command "echo $( \
 /System/Library/PrivateFrameworks/Apple80211.framework/\
 Versions/Current/Resources/airport -I  \
 | awk '/ SSID:/ {print $2}')"
+
+spacebar -m config left_shell on
+spacebar -m config left_shell_icon MUSIC
+spacebar -m config left_shell_icon_color 0xffb5bd68
+spacebar -m config left_shell_command "osascript $HOME/.config/spacebar/music | cat"
 
 echo "spacebar configuration loaded.."
