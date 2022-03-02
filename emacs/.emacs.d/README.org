@@ -162,6 +162,7 @@ Keep backups inside =~/.emacs.d/= instead of the working directory, and keep aut
 #+begin_src emacs-lisp
   (global-set-key (kbd "M-/") #'hippie-expand)
   (global-set-key (kbd "M-o") #'other-window)
+  (global-set-key (kbd "C-M-r") #'raise-sexp)
 #+end_src
 
 ** =exec-path-from-shell=
