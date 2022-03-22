@@ -1,8 +1,12 @@
 #!/usr/bin/osascript
 if application "Music" is running then
    tell application "Music"
-	if exists current track
-	    return name of current track
+	if exists current track then
+	    if composer of current track is not equal to "" then
+		return name of current track & " - " & composer of current track
+	    else
+		return name of current track & " - " & artist of current track
+	    end if
 	end if
    end tell
 end if

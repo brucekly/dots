@@ -3,7 +3,7 @@
 spacebar -m config position top
 spacebar -m config display all
 spacebar -m config height 26
-spacebar -m config title on
+spacebar -m config title off
 
 spacebar -m config padding_left 20
 spacebar -m config padding_right 20
@@ -37,16 +37,18 @@ spacebar -m config dnd_icon DND
 spacebar -m config dnd_icon_color 0xffcc6666
 
 spacebar -m config right_shell on
-spacebar -m config right_shell_icon WIFI
+spacebar -m config right_shell_icon MAIL
 spacebar -m config right_shell_icon_color 0xff8abeb7
-spacebar -m config right_shell_command "echo $( \
-/System/Library/PrivateFrameworks/Apple80211.framework/\
-Versions/Current/Resources/airport -I  \
-| awk '/ SSID:/ {print $2}')"
+spacebar -m config right_shell_command "mu find \
+'flag:unread and m:/university/inbox or flag:unread and m:/gmail/inbox' \
+| wc -l | tr -d '[:blank:]'"
+
+spacebar -m config center_shell on
+spacebar -m config center_shell_command "osascript $HOME/.config/spacebar/music | cat"
 
 spacebar -m config left_shell on
-spacebar -m config left_shell_icon MUSIC
+spacebar -m config left_shell_icon WIFI
 spacebar -m config left_shell_icon_color 0xffb5bd68
-spacebar -m config left_shell_command "osascript $HOME/.config/spacebar/music | cat"
+spacebar -m config left_shell_command "$HOME/.config/spacebar/network"
 
 echo "spacebar configuration loaded.."
