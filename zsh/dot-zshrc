@@ -12,6 +12,8 @@ precmd() { vcs_info }
 setopt prompt_subst
 PROMPT='%F{green}%n@%m %F{cyan}%~%F{green}${vcs_info_msg_0_}%F{red}: %f'
 
+export LANG=en_GB.UTF-8
+
 export EDITOR=vim
 export VISUAL=$EDITOR
 
