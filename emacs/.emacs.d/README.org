@@ -504,26 +504,6 @@
       (mu4e t))
   #+end_src
 
-  Also add an indicator to the modeline when I have new mail.
-
-  #+begin_src emacs-lisp
-    (use-package mu4e-alert
-      :disabled
-      :after mu4e
-      :init
-      (setq mu4e-alert-interesting-mail-query
-	    (concat
-	     "flag:unread maildir:/university/Inbox "
-	     "OR "
-	     "flag:unread maildir:/gmail/[Gmail]/INBOX"))
-      (setq mu4e-alert-modeline-formatter
-	    (lambda (mail-count)
-	      (if (not (zerop mail-count))
-		  (format "[Mail %d] " mail-count)
-		" ")))
-      (mu4e-alert-enable-mode-line-display))
-  #+end_src
-
   Check that I've attached something before sending a message if I've said I will.
 
   #+begin_src emacs-lisp
