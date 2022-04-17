@@ -1,4 +1,4 @@
-#!/usr/bin/osascript
+#!/usr/bin/env osascript
 if application "Music" is running then
    tell application "Music"
 	if exists current track then

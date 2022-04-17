@@ -36,19 +36,17 @@ spacebar -m config dnd on
 spacebar -m config dnd_icon DND
 spacebar -m config dnd_icon_color 0xffcc6666
 
-spacebar -m config right_shell on
-spacebar -m config right_shell_icon MAIL
-spacebar -m config right_shell_icon_color 0xff00d3d0
-spacebar -m config right_shell_command "mu find \
-'flag:unread and m:/university/inbox or flag:unread and m:/gmail/inbox' \
-| wc -l | tr -d '[:blank:]'"
-
-spacebar -m config center_shell on
-spacebar -m config center_shell_command "osascript $HOME/.config/spacebar/music | cat"
-
 spacebar -m config left_shell on
 spacebar -m config left_shell_icon WIFI
 spacebar -m config left_shell_icon_color 0xff44bc44
 spacebar -m config left_shell_command "$HOME/.config/spacebar/network"
+
+spacebar -m config right_shell on
+spacebar -m config right_shell_icon MAIL
+spacebar -m config right_shell_icon_color 0xff00d3d0
+spacebar -m config right_shell_command "$HOME/.config/spacebar/mail"
+
+spacebar -m config center_shell on
+spacebar -m config center_shell_command "osascript $HOME/.config/spacebar/music" &
 
 echo "spacebar configuration loaded.."
