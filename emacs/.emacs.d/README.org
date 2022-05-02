@@ -221,13 +221,17 @@
 
 ** Paren matching
 
-   Enable =electric-pair-mode=.
+   Enable =electric-pair-mode= and disable matching '<>' pairs.
 
    #+begin_src emacs-lisp
      (use-package elec-pair
        :ensure nil
        :config
-       (electric-pair-mode t))
+       (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit
+	     electric-pair-preserve-balance t)
+       (add-function :before-until electric-pair-inhibit-predicate
+		     (lambda (c) (eq c ?<)))
+       (electric-pair-mode))
    #+end_src
 
 ** Completion
