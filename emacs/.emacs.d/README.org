@@ -83,24 +83,15 @@
        (minions-mode t))
    #+end_src
 
-* Defuns
-** Line numbers in =goto-line=
+** =eww=
 
-   http://whattheemacsd.com/key-bindings.el-01.html
+   Tell =eww= to ensure contrast between text and the background is sufficient for text to be legible.
 
    #+begin_src emacs-lisp
-     (global-set-key [remap goto-line] 'goto-line-with-feedback)
-
-     (defun goto-line-with-feedback ()
-       "Show line numbers temporarily, while prompting for the line number input"
-       (interactive)
-       (unwind-protect
-	   (progn
-	     (display-line-numbers-mode 1)
-	     (goto-line (read-number "Goto line: ")))
-	 (display-line-numbers-mode -1)))
+     (setq shr-color-visible-luminance-min 80)
    #+end_src
 
+* Defuns
 ** Jump to config
 
    #+begin_src emacs-lisp
