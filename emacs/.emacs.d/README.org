@@ -2,594 +2,595 @@
 
 * Starting up
 
-  #+begin_src emacs-lisp
-    (setq gc-cons-threshold 100000000
-	  read-process-output-max (* 1024 1024))
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold 100000000
+	read-process-output-max (* 1024 1024))
 
-    (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-    (unless (file-exists-p custom-file)
-      (with-temp-buffer (write-file custom-file)))
-    (load custom-file)
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (unless (file-exists-p custom-file)
+    (with-temp-buffer (write-file custom-file)))
+  (load custom-file)
 
-    (require 'use-package-ensure)
-    (setq use-package-always-ensure t)
-  #+end_src
+  (require 'use-package-ensure)
+  (setq use-package-always-ensure t)
+#+end_src
 
-  Set personal information.
+Set personal information.
 
-  #+begin_src emacs-lisp
-    (setq user-mail-address "lucy.mcphail.p@gmail.com"
-	  user-full-name "Lucy McPhail")
-  #+end_src
+#+begin_src emacs-lisp
+  (setq user-mail-address "lucy.mcphail.p@gmail.com"
+	user-full-name "Lucy McPhail")
+#+end_src
 
 * Appearance
 ** Built in tweaks
 
-   #+begin_src emacs-lisp
-     (menu-bar-mode -1)
-     (tool-bar-mode -1)
-     (scroll-bar-mode -1)
+#+begin_src emacs-lisp
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
 
-     (setq inhibit-splash-screen t)
+  (setq inhibit-splash-screen t)
 
-     (when window-system
-       (setq frame-title-format "%b"
-	     use-dialog-box nil)
-       (tooltip-mode -1)
-       (blink-cursor-mode -1))
+  (when window-system
+    (setq frame-title-format "%b"
+	  use-dialog-box nil)
+    (tooltip-mode -1)
+    (blink-cursor-mode -1))
 
-     (setq show-paren-delay 0)
-     (show-paren-mode t)
+  (setq show-paren-delay 0)
+  (show-paren-mode t)
 
-     (line-number-mode t)
-     (column-number-mode t)
+  (line-number-mode t)
+  (column-number-mode t)
 
-     (setq frame-resize-pixelwise t)
+  (setq frame-resize-pixelwise t)
 
-     (setq-default word-wrap t)
-   #+end_src
+  (setq-default word-wrap t)
+#+end_src
 
 ** Theme
 
-   Set a nice font and theme.
+Set a nice font and theme.
 
-   #+begin_src emacs-lisp
-     (set-face-attribute 'default nil :font "DejaVu Sans Mono-12")
-     (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono-12")
-     (set-face-attribute 'variable-pitch nil :font "DejaVu Sans-13")
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :font "DejaVu Sans Mono-12")
+  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono-12")
+  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans-13")
 
-     (use-package modus-themes
-       :init
-       (setq modus-themes-italic-constructs t
-	     modus-themes-bold-constructs t
-	     modus-themes-mixed-fonts t
-	     modus-themes-mode-line '(accented))
-       (setq x-underline-at-descent-line t)
-       (modus-themes-load-themes)
-       :config
-       (modus-themes-load-operandi))
-   #+end_src
+  (use-package modus-themes
+    :init
+    (setq modus-themes-italic-constructs t
+	  modus-themes-bold-constructs t
+	  modus-themes-mixed-fonts t
+	  modus-themes-mode-line '(accented))
+    (setq x-underline-at-descent-line t)
+    (modus-themes-load-themes)
+    :config
+    (modus-themes-load-operandi))
+#+end_src
 
 ** Minions
 
-   Hide minor modes from the modeline
+Hide minor modes from the modeline
 
-   #+begin_src emacs-lisp
-     (use-package minions
-       :config
-       (setq minions-mode-line-lighter ";")
-       (setq minions-prominent-modes
-	     '(defining-kbd-macro
-		flymake-mode))
-       (minions-mode t))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package minions
+    :config
+    (setq minions-mode-line-lighter ";")
+    (setq minions-prominent-modes
+	  '(defining-kbd-macro
+	     flymake-mode))
+    (minions-mode t))
+#+end_src
 
 ** =eww=
 
-   Tell =eww= to ensure contrast between text and the background is sufficient for text to be legible.
+Tell =eww= to ensure contrast between text and the background is sufficient for text to be legible.
 
-   #+begin_src emacs-lisp
-     (setq shr-color-visible-luminance-min 80)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq shr-color-visible-luminance-min 80)
+#+end_src
 
 * Defuns
 ** Jump to config
 
-   #+begin_src emacs-lisp
-     (defun open-config ()
-       (interactive)
-       (find-file
-	(expand-file-name "README.org" user-emacs-directory)))
+#+begin_src emacs-lisp
+  (defun open-config ()
+    (interactive)
+    (find-file
+     (expand-file-name "README.org" user-emacs-directory)))
 
-     (global-set-key (kbd "C-c i") #'open-config)
-   #+end_src
+  (global-set-key (kbd "C-c i") #'open-config)
+#+end_src
 
 ** Eval and replace sexp
 
-   https://emacsredux.com/blog/2013/06/21/eval-and-replace/
+https://emacsredux.com/blog/2013/06/21/eval-and-replace/
 
-   #+begin_src emacs-lisp
-     (defun eval-and-replace ()
-       "Replace the preceding sexp with its value"
-       (interactive)
-       (backward-kill-sexp)
-       (condition-case nil
-	   (prin1 (eval (read (current-kill 0)))
-		  (current-buffer))
-	 (error (message "Invalid expression")
-		(insert (current-kill 0)))))
+#+begin_src emacs-lisp
+  (defun eval-and-replace ()
+    "Replace the preceding sexp with its value"
+    (interactive)
+    (backward-kill-sexp)
+    (condition-case nil
+	(prin1 (eval (read (current-kill 0)))
+	       (current-buffer))
+      (error (message "Invalid expression")
+	     (insert (current-kill 0)))))
 
-     (global-set-key (kbd "C-c e") #'eval-and-replace)
-   #+end_src
+  (global-set-key (kbd "C-c e") #'eval-and-replace)
+#+end_src
 
 ** Increment numbers
 
-   Copy vim's C-a and C-x.
+Copy vim's C-a and C-x.
 
-   #+begin_src emacs-lisp
-     (defun increment-number-at-point (times)
-       (interactive "p")
-       (save-excursion
-	 (skip-chars-backward "0-9")
-	 (if (looking-at "[0-9]+")
-	     (replace-match
-	      (number-to-string (+ times (string-to-number (match-string 0)))))
-	   (error "No number at point"))))
+#+begin_src emacs-lisp
+  (defun increment-number-at-point (times)
+    (interactive "p")
+    (save-excursion
+      (skip-chars-backward "0-9")
+      (if (looking-at "[0-9]+")
+	  (replace-match
+	   (number-to-string (+ times (string-to-number (match-string 0)))))
+	(error "No number at point"))))
 
-     (global-set-key (kbd "C-c +") #'increment-number-at-point)
-   #+end_src
+  (global-set-key (kbd "C-c +") #'increment-number-at-point)
+#+end_src
 
 * General configuration
 ** Misc
 
-   #+begin_src emacs-lisp
-     (defalias 'yes-or-no-p 'y-or-n-p)
-     (defalias 'list-buffers 'ibuffer)
+#+begin_src emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  (defalias 'list-buffers 'ibuffer)
 
-     (setq ring-bell-function (lambda () nil)
-	   delete-by-moving-to-trash t
-	   disabled-command-function nil
-	   compilation-ask-about-save nil
-	   message-kill-buffer-on-exit t
-	   sentence-end-double-space nil
-	   confirm-kill-emacs #'y-or-n-p)
-   #+end_src
+  (setq ring-bell-function (lambda () nil)
+	delete-by-moving-to-trash t
+	disabled-command-function nil
+	compilation-ask-about-save nil
+	message-kill-buffer-on-exit t
+	sentence-end-double-space nil
+	confirm-kill-emacs #'y-or-n-p)
+#+end_src
 
 ** Auto revert
 
-   Automatically detect and load changes to files and dired buffers.
+Automatically detect and load changes to files and dired buffers.
 
-   #+begin_src emacs-lisp
-     (global-auto-revert-mode 1)
-     (setq global-auto-revert-non-file-buffers t
-	   auto-revert-verbose nil)
-   #+end_src
+#+begin_src emacs-lisp
+  (global-auto-revert-mode 1)
+  (setq global-auto-revert-non-file-buffers t
+	auto-revert-verbose nil)
+#+end_src
 
 ** Backups and saves
 
-   Keep backups inside =~/.emacs.d/= instead of the working directory, and keep auto saves in a temporary directory.
+Keep backups inside =~/.emacs.d/= instead of the working directory, and keep auto saves in a temporary directory.
 
-   #+begin_src emacs-lisp
-     (setq backup-directory-alist
-	   `(("." . ,(expand-file-name "backups" user-emacs-directory))))
-     (setq auto-save-file-name-transforms
-	   `((".*" ,temporary-file-directory t)))
-   #+end_src
+#+begin_src emacs-lisp
+  (setq backup-directory-alist
+	`(("." . ,(expand-file-name "backups" user-emacs-directory))))
+  (setq auto-save-file-name-transforms
+	`((".*" ,temporary-file-directory t)))
+#+end_src
 
 ** Keybinds
 
-   #+begin_src emacs-lisp
-     (global-set-key (kbd "M-/") #'hippie-expand)
-     (global-set-key (kbd "M-o") #'other-window)
-     (global-set-key (kbd "C-M-r") #'raise-sexp)
-   #+end_src
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-/") #'hippie-expand)
+  (global-set-key (kbd "M-o") #'other-window)
+  (global-set-key (kbd "C-M-r") #'raise-sexp)
+#+end_src
 
 ** Window movement and transposition
 
-   Bind keys for moving and swapping windows.
+Bind keys for moving and swapping windows.
 
-   #+begin_src emacs-lisp
-     (use-package windmove
-       :ensure nil
-       :config
-       (windmove-default-keybindings)
-       (windmove-swap-states-default-keybindings '(ctrl shift)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package windmove
+    :ensure nil
+    :config
+    (windmove-default-keybindings)
+    (windmove-swap-states-default-keybindings '(ctrl shift)))
+#+end_src
 
-   Change frame layouts with =transpose-frame=.
+Change frame layouts with =transpose-frame=.
 
-   #+begin_src emacs-lisp
-     (use-package transpose-frame
-       :bind
-       ("C-x M-r" . rotate-frame-clockwise))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package transpose-frame
+    :bind
+    ("C-x M-r" . rotate-frame-clockwise))
+#+end_src
 
 ** =exec-path-from-shell=
 
-   Ensure environment variables in emacs match the user shell.
+Ensure environment variables in emacs match the user shell.
 
-   #+begin_src emacs-lisp
-     (when (memq window-system '(mac ns x))
-       (use-package exec-path-from-shell
-	 :config
-	 (exec-path-from-shell-initialize)))
-   #+end_src
+#+begin_src emacs-lisp
+  (when (memq window-system '(mac ns x))
+    (use-package exec-path-from-shell
+      :config
+      (exec-path-from-shell-initialize)))
+#+end_src
 
 ** Mac changes
 
-   Use command as the meta key on macOS, and unbind option to make inserting special characters easier. Also enable the menu bar, since it doesn't take up extra room on macOS.
+Use command as the meta key on macOS, and unbind option to make inserting special characters easier. Also enable the menu bar, since it doesn't take up extra room on macOS.
 
-   #+begin_src emacs-lisp
-     (when (eq system-type 'darwin)
-       (setq mac-command-modifier 'meta
-	     mac-option-modifier 'meta
-	     ns-function-modifier 'hyper
-	     mac-pass-command-to-system nil)
-       (menu-bar-mode t))
-   #+end_src
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta
+	  mac-option-modifier 'meta
+	  ns-function-modifier 'hyper
+	  mac-pass-command-to-system nil)
+    (menu-bar-mode t))
+#+end_src
 
 ** Whitespace cleanup
 
-   Clean whitespace on save, but only if it was already clean to avoid messy diffs.
+Clean whitespace on save, but only if it was already clean to avoid messy diffs.
 
-   #+begin_src emacs-lisp
-     (use-package whitespace-cleanup-mode
-       :config
-       (global-whitespace-cleanup-mode t))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package whitespace-cleanup-mode
+    :config
+    (global-whitespace-cleanup-mode t))
+#+end_src
 
 ** Paren matching
 
-   Enable =electric-pair-mode= and disable matching '<>' pairs.
+Enable =electric-pair-mode= and disable matching '<>' pairs.
 
-   #+begin_src emacs-lisp
-     (use-package elec-pair
-       :ensure nil
-       :config
-       (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit
-	     electric-pair-preserve-balance t)
-       (add-function :before-until electric-pair-inhibit-predicate
-		     (lambda (c) (eq c ?<)))
-       (electric-pair-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package elec-pair
+    :ensure nil
+    :config
+    (setq electric-pair-inhibit-predicate 'electric-pair-conservative-inhibit
+	  electric-pair-preserve-balance t)
+    (add-function :before-until electric-pair-inhibit-predicate
+		  (lambda (c) (eq c ?<)))
+    (electric-pair-mode))
+#+end_src
 
 ** Completion
 
-   Vertico is a lightweight completion UI.
+Vertico is a lightweight completion UI.
 
-   #+begin_src emacs-lisp
-     (use-package vertico
-       :config
-       (vertico-mode t))
+#+begin_src emacs-lisp
+  (use-package vertico
+    :config
+    (vertico-mode t))
 
-     (use-package orderless
-       :custom (completion-styles '(orderless)))
+  (use-package orderless
+    :custom (completion-styles '(orderless)))
 
-     (use-package marginalia
-       :config
-       (marginalia-mode t))
-   #+end_src
+  (use-package marginalia
+    :config
+    (marginalia-mode t))
+#+end_src
 
-   Consult provides a lot of useful commands based on =completing-read=.
+Consult provides a lot of useful commands based on =completing-read=.
 
-   #+begin_src emacs-lisp
-     (use-package consult
-       :bind
-       (("C-x r b" . consult-bookmark)
-	("C-x M-:" . consult-complex-command)
-	("C-x M-m" . consult-minor-mode-menu)
-	("C-x M-k" . consult-kmacro)
-	([remap goto-line] . consult-goto-line)
-	("M-K" . consult-keep-lines)
-	("M-F" . consult-focus-lines)
-	("M-s M-b" . consult-buffer)
-	("M-s M-f" . consult-find)
-	("M-s M-g" . consult-grep)
-	("M-s M-h" . consult-history)
-	("M-s M-i" . consult-imenu)
-	("M-s M-l" . consult-line)
-	("M-s M-m" . consult-mark)
-	("M-s M-s" . consult-outline)
-	("M-s M-y" . consult-yank-pop)
-	("C-x r r" . consult-register))
-       :init
-       (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-       (setq xref-show-xrefs-function #'consult-xref
-	     xref-show-definitions-function #'consult-xref)
-       (setq consult-project-function (lambda (_) (projectile-project-root))))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package consult
+    :bind
+    (("C-x r b" . consult-bookmark)
+     ("C-x M-:" . consult-complex-command)
+     ("C-x M-m" . consult-minor-mode-menu)
+     ("C-x M-k" . consult-kmacro)
+     ([remap goto-line] . consult-goto-line)
+     ("M-K" . consult-keep-lines)
+     ("M-F" . consult-focus-lines)
+     ("M-s M-b" . consult-buffer)
+     ("M-s M-f" . consult-find)
+     ("M-s M-g" . consult-grep)
+     ("M-s M-h" . consult-history)
+     ("M-s M-i" . consult-imenu)
+     ("M-s M-l" . consult-line)
+     ("M-s M-m" . consult-mark)
+     ("M-s M-s" . consult-outline)
+     ("M-s M-y" . consult-yank-pop)
+     ("C-x r r" . consult-register))
+    :init
+    (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+    (setq xref-show-xrefs-function #'consult-xref
+	  xref-show-definitions-function #'consult-xref)
+    (setq consult-project-function (lambda (_) (projectile-project-root))))
+#+end_src
 
-   Load some consult extensions.
-   The package =consult-dir= provides a directory jumper, like =z= in the shell, but for emacs.
-   Consult comes with a binding to search =flymake= errors, but I use =flycheck= instead.
+Load some consult extensions.
+The package =consult-dir= provides a directory jumper, like =z= in the shell, but for emacs.
+Consult comes with a binding to search =flymake= errors, but I use =flycheck= instead.
 
-   #+begin_src elisp
-     (use-package consult-dir
-       :after consult
-       :bind (("C-x C-d" . consult-dir)
-	      :map minibuffer-local-completion-map
-	      ("C-x C-d" . consult-dir)
-	      ("C-x C-j" . consult-dir-jump-file))
-       :config
-       (setq consult-dir-project-list-function #'consult-dir-projectile-dirs))
-   #+end_src
+#+begin_src elisp
+  (use-package consult-dir
+    :after consult
+    :bind (("C-x C-d" . consult-dir)
+	   :map minibuffer-local-completion-map
+	   ("C-x C-d" . consult-dir)
+	   ("C-x C-j" . consult-dir-jump-file))
+    :config
+    (setq consult-dir-project-list-function #'consult-dir-projectile-dirs))
+#+end_src
 
-   Embark provides a contextual menu for emacs which integrates with consult.
+Embark provides a contextual menu for emacs which integrates with consult.
 
-   #+begin_src emacs-lisp
-     (use-package embark
-       :bind
-       (("C-." . embark-act)
-	("M-." . embark-dwim)
-	("C-h B" . embark-bindings))
-       :init
-       (setq prefix-help-command #'embark-prefix-help-command))
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("M-." . embark-dwim)
+     ("C-h B" . embark-bindings))
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command))
 
-     (use-package embark-consult
-       :after (embark consult)
-       :demand t
-       :hook (embark-collect-mode . consult-preview-at-point-mode))
-   #+end_src
+  (use-package embark-consult
+    :after (embark consult)
+    :demand t
+    :hook (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
 
-   Corfu displays completion-at-point results in a child frame.
+Corfu displays completion-at-point results in a child frame.
 
-   #+begin_src emacs-lisp
-     (use-package corfu
-       :init
-       (corfu-global-mode))
+#+begin_src emacs-lisp
+  (use-package corfu
+    :init
+    (corfu-global-mode))
 
-     (setq tab-always-indent 'complete)
-   #+end_src
+  (setq tab-always-indent 'complete)
+#+end_src
 
-   #+begin_src emacs-lisp
-     (use-package cape
-       :config
-       (setq cape-dabbrev-min-length 3)
-       (dolist (backend '(cape-symbol cape-keyword cape-file cape-dabbrev))
-	 (add-to-list 'completion-at-point-functions backend)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package cape
+    :config
+    (setq cape-dabbrev-min-length 3)
+    (dolist (backend '(cape-symbol cape-keyword cape-file cape-dabbrev))
+      (add-to-list 'completion-at-point-functions backend)))
+#+end_src
 
 ** Recent files
 
-   #+begin_src emacs-lisp
-     (use-package recentf
-       :config
-       (setq recentf-max-saved-items 50)
-       (recentf-mode t))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package recentf
+    :config
+    (setq recentf-max-saved-items 50)
+    (recentf-mode t))
+#+end_src
 
 ** Magit
 
-   #+begin_src emacs-lisp
-     (use-package magit
-       :bind (("C-x g" . magit)
-	      ("C-x M-g" . magit-dispatch)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package magit
+    :bind (("C-x g" . magit)
+	   ("C-x M-g" . magit-dispatch)))
+#+end_src
 
 ** Projectile
 
-   #+begin_src emacs-lisp
-     (use-package projectile
-       :bind ("C-c p" . projectile-command-map)
-       :init
-       (projectile-mode t))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package projectile
+    :bind ("C-c p" . projectile-command-map)
+    :init
+    (projectile-mode t))
+#+end_src
 
 ** Restclient
 
-   #+begin_src emacs-lisp
-     (use-package restclient)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package restclient)
+#+end_src
 
 ** Olivetti
 
-   #+begin_src emacs-lisp
-     (use-package olivetti
-       :bind ("C-c o" . olivetti-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :bind ("C-c o" . olivetti-mode))
+#+end_src
 
 * Org
 
-  #+begin_src emacs-lisp
-    (use-package org
-      :bind (("C-c a" . org-agenda)
-	     ("C-c c" . org-capture))
-      :config
-      (require 'org-tempo)
-      (setq calendar-week-start-day 1
-	    org-agenda-start-on-weekday 1
-	    org-agenda-files "~/org/agenda-files.txt"
-	    org-enforce-todo-dependencies t
-	    org-enforce-todo-checkbox-dependencies t)
-      (add-hook 'org-shiftup-final-hook 'windmove-up)
-      (add-hook 'org-shiftleft-final-hook 'windmove-left)
-      (add-hook 'org-shiftdown-final-hook 'windmove-down)
-      (add-hook 'org-shiftright-final-hook 'windmove-right)
-      (add-to-list 'org-structure-template-alist
-		   '("el" . "src emacs-lisp")))
-  #+end_src
+#+begin_src emacs-lisp
+  (use-package org
+    :bind (("C-c a" . org-agenda)
+	   ("C-c c" . org-capture))
+    :config
+    (require 'org-tempo)
+    (setq calendar-week-start-day 1
+	  org-agenda-start-on-weekday 1
+	  org-agenda-files "~/org/agenda-files.txt"
+	  org-enforce-todo-dependencies t
+	  org-enforce-todo-checkbox-dependencies t)
+    (add-hook 'org-shiftup-final-hook 'windmove-up)
+    (add-hook 'org-shiftleft-final-hook 'windmove-left)
+    (add-hook 'org-shiftdown-final-hook 'windmove-down)
+    (add-hook 'org-shiftright-final-hook 'windmove-right)
+    (add-to-list 'org-structure-template-alist
+		 '("el" . "src emacs-lisp")))
+#+end_src
 
-  #+begin_src emacs-lisp
-    (setq org-refile-targets '((org-agenda-files . (:maxlevel . 2)))
-	  org-refile-use-outline-path 'file
-	  org-refile-allow-creating-parent-nodes t
-	  org-outline-path-complete-in-steps nil)
+#+begin_src emacs-lisp
+  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 2)))
+	org-refile-use-outline-path 'file
+	org-refile-allow-creating-parent-nodes t
+	org-outline-path-complete-in-steps nil)
 
-    (setq org-capture-templates
-	  '(("t" "TODO entry" entry
-	     (file+headline "~/org/personal.org" "Inbox")
-	     (file "~/org/tpl-todo.txt"))
-	    ("b" "Add book to read" entry
-	     (file+headline "personal.org" "Books to read")
-	     (file "~/org/tpl-book.txt"))
-	    ("m" "Mail" entry
-	     (file+headline "personal.org" "Inbox")
-	     (file "~/org/tpl-mail.txt"))))
-  #+end_src
+  (setq org-capture-templates
+	'(("t" "TODO entry" entry
+	   (file+headline "~/org/personal.org" "Inbox")
+	   (file "~/org/tpl-todo.txt"))
+	  ("b" "Add book to read" entry
+	   (file+headline "personal.org" "Books to read")
+	   (file "~/org/tpl-book.txt"))
+	  ("m" "Mail" entry
+	   (file+headline "personal.org" "Inbox")
+	   (file "~/org/tpl-mail.txt"))))
+#+end_src
 
 * Mail
 
-  I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
+I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 
-  #+begin_src emacs-lisp
-    (use-package mu4e
-      :ensure nil
-      :demand t
-      :bind ("C-c m" . mu4e)
-      :config
-      (setq mail-user-agent 'mu4e-user-agent)
+#+begin_src emacs-lisp
+  (use-package mu4e
+    :ensure nil
+    :demand t
+    :bind ("C-c m" . mu4e)
+    :config
+    (setq mail-user-agent 'mu4e-user-agent)
 
-      (setq mu4e-completing-read-function #'completing-read)
+    (setq mu4e-completing-read-function #'completing-read)
 
-      (setq mu4e-sent-folder "/gmail/[Gmail]/Sent Mail"
-	    mu4e-trash-folder "/gmail/[Gmail]/Trash"
-	    mu4e-drafts-folder "/gmail/[Gmail]/Drafts")
+    (setq mu4e-sent-folder "/gmail/[Gmail]/Sent Mail"
+	  mu4e-trash-folder "/gmail/[Gmail]/Trash"
+	  mu4e-drafts-folder "/gmail/[Gmail]/Drafts")
 
-      (setq mu4e-maildir-shortcuts
-	    '((:maildir "/gmail/INBOX" :key ?i)
-	      (:maildir "/gmail/[Gmail]/Sent Mail" :key ?s)
-	      (:maildir "/gmail/[Gmail]/Trash" :key ?t)
-	      (:maildir "/gmail/[Gmail]/All Mail" :key ?a)
-	      (:maildir "/university/Inbox" :key ?I)
-	      (:maildir "/university/Sent Items" :key ?S)
-	      (:maildir "/university/Deleted Items" :key ?T)
-	      (:maildir "/university/Archive" :key ?A)))
+    (setq mu4e-maildir-shortcuts
+	  '((:maildir "/gmail/INBOX" :key ?i)
+	    (:maildir "/gmail/[Gmail]/Sent Mail" :key ?s)
+	    (:maildir "/gmail/[Gmail]/Trash" :key ?t)
+	    (:maildir "/gmail/[Gmail]/All Mail" :key ?a)
+	    (:maildir "/university/Inbox" :key ?I)
+	    (:maildir "/university/Sent Items" :key ?S)
+	    (:maildir "/university/Deleted Items" :key ?T)
+	    (:maildir "/university/Archive" :key ?A)))
 
-      (setq mu4e-contexts
-	    (list (make-mu4e-context
-		   :name "personal"
-		   :match-func
-		   (lambda (msg)
-		     (when msg
-		       (string-prefix-p "/gmail/[Gmail]"
-					(mu4e-message-field msg :maildir))))
-		   :vars '((user-mail-address . "lucy.mcphail.p@gmail.com")
-			   (mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
-			   (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
-			   (mu4e-drafts-folder . "/gmail/[Gmail]/Drafts")
-			   (mu4e-refile-folder . "/gmail/[Gmail]/All Mail")
-			   (mu4e-sent-messages-behavior . delete)))
-		  (make-mu4e-context
-		   :name "university"
-		   :match-func
-		   (lambda (msg)
-		     (when msg
-		       (string-prefix-p "/university"
-					(mu4e-message-field msg :maildir))))
-		   :vars '((user-mail-address . "s2079454@ed.ac.uk")
-			   (mu4e-sent-folder . "/university/Sent Items")
-			   (mu4e-trash-folder . "/university/Deleted Items")
-			   (mu4e-drafts-folder . "/university/Drafts")
-			   (mu4e-refile-folder . "/university/Archive")
-			   (mu4e-sent-messages-behavior . delete)))))
+    (setq mu4e-contexts
+	  (list (make-mu4e-context
+		 :name "personal"
+		 :match-func
+		 (lambda (msg)
+		   (when msg
+		     (string-prefix-p "/gmail/[Gmail]"
+				      (mu4e-message-field msg :maildir))))
+		 :vars '((user-mail-address . "lucy.mcphail.p@gmail.com")
+			 (mu4e-sent-folder . "/gmail/[Gmail]/Sent Mail")
+			 (mu4e-trash-folder . "/gmail/[Gmail]/Trash")
+			 (mu4e-drafts-folder . "/gmail/[Gmail]/Drafts")
+			 (mu4e-refile-folder . "/gmail/[Gmail]/All Mail")
+			 (mu4e-sent-messages-behavior . delete)))
+		(make-mu4e-context
+		 :name "university"
+		 :match-func
+		 (lambda (msg)
+		   (when msg
+		     (string-prefix-p "/university"
+				      (mu4e-message-field msg :maildir))))
+		 :vars '((user-mail-address . "s2079454@ed.ac.uk")
+			 (mu4e-sent-folder . "/university/Sent Items")
+			 (mu4e-trash-folder . "/university/Deleted Items")
+			 (mu4e-drafts-folder . "/university/Drafts")
+			 (mu4e-refile-folder . "/university/Archive")
+			 (mu4e-sent-messages-behavior . delete)))))
 
-      (setq mu4e-bookmarks
-	    '((:name "Unified inbox"
-		     :query "maildir:/gmail/INBOX OR maildir:/university/Inbox"
-		     :key ?i)
-	      (:name "Today's messages" :query "date:today..now" :key ?t)
-	      (:name "Last 7 days" :query "date:7d..now" :hide-unread t :key ?w)))
+    (setq mu4e-bookmarks
+	  '((:name "Unified inbox"
+		   :query "maildir:/gmail/INBOX OR maildir:/university/Inbox"
+		   :key ?i)
+	    (:name "Today's messages" :query "date:today..now" :key ?t)
+	    (:name "Last 7 days" :query "date:7d..now" :hide-unread t :key ?w)))
 
-      (setq mu4e-context-policy 'pick-first
-	    mu4e-compose-context-policy 'always-ask)
+    (setq mu4e-context-policy 'pick-first
+	  mu4e-compose-context-policy 'always-ask)
 
-      (setq mu4e-get-mail-command "true")
+    (setq mu4e-get-mail-command "true")
 
-      (require 'smtpmail)
-      (setq sendmail-program "msmtp"
-	    message-sendmail-f-is-evil t
-	    message-sendmail-extra-arguments '("--read-envelope-from")
-	    send-mail-function 'smtpmail-send-it
-	    message-send-mail-function 'message-send-mail-with-sendmail)
+    (require 'smtpmail)
+    (setq sendmail-program "msmtp"
+	  message-sendmail-f-is-evil t
+	  message-sendmail-extra-arguments '("--read-envelope-from")
+	  send-mail-function 'smtpmail-send-it
+	  message-send-mail-function 'message-send-mail-with-sendmail)
 
-      (setq mu4e-update-interval (* 60 15))
+    (setq mu4e-update-interval (* 60 15))
 
-      (setq mu4e-change-filenames-when-moving t)
+    (setq mu4e-change-filenames-when-moving t)
 
-      (setq mu4e-headers-include-related nil
-	    mu4e-hide-index-messages t
-	    mu4e-compose-dont-reply-to-self t
-	    mu4e-attachment-dir  "~/Downloads")
+    (setq mu4e-headers-include-related nil
+	  mu4e-hide-index-messages t
+	  mu4e-compose-dont-reply-to-self t
+	  mu4e-attachment-dir  "~/Downloads")
 
-      (setq mu4e-confirm-quit nil)
+    (setq mu4e-confirm-quit nil)
 
-      (mu4e t))
-  #+end_src
+    (mu4e t))
+#+end_src
 
-  Check that I've attached something before sending a message if I've said I will.
+Check that I've attached something before sending a message if I've said I will.
 
-  #+begin_src emacs-lisp
-    (defun message-attachment-present-p ()
-      (save-excursion
-	(save-restriction
-	  (widen)
-	  (goto-char (point-min))
-	  (when (search-forward "<#part type" nil t) t))))
+#+begin_src emacs-lisp
+  (defun message-attachment-present-p ()
+    (save-excursion
+      (save-restriction
+	(widen)
+	(goto-char (point-min))
+	(when (search-forward "<#part type" nil t) t))))
 
-    (defun message-warn-if-no-attachments ()
-      (when (and
-	     (save-excursion
-	       (save-restriction
-		 (widen)
-		 (goto-char (point-min))
-		 (re-search-forward "attach" nil t)))
-	     (not (message-attachment-present-p)))
-	(unless (y-or-n-p "No attachment. Send the message?")
-	  (keyboard-quit))))
+  (defun message-warn-if-no-attachments ()
+    (when (and
+	   (save-excursion
+	     (save-restriction
+	       (widen)
+	       (goto-char (point-min))
+	       (re-search-forward "attach" nil t)))
+	   (not (message-attachment-present-p)))
+      (unless (y-or-n-p "No attachment. Send the message?")
+	(keyboard-quit))))
 
-    (add-hook 'message-send-hook #'message-warn-if-no-attachments)
-  #+end_src
+  (add-hook 'message-send-hook #'message-warn-if-no-attachments)
+#+end_src
 
 * Languages
 ** LSP
 
-   #+begin_src emacs-lisp
-     (use-package yasnippet
-       :config
-       (yas-global-mode t))
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :config
+    (yas-global-mode t))
 
-     (use-package eglot
-       :bind (:map eglot-mode-map
-		   ("C-c r" . eglot-rename)
-		   ("C-c F" . eglot-code-action-organize-imports)
-		   ("C-c f" . eglot-format)
-		   ("C-c h" . eldoc))
-       :config
-       (setq eldoc-echo-area-use-multiline-p nil)
-       (define-key eglot-mode-map [remap display-local-help] nil))
-   #+end_src
+  (use-package eglot
+    :bind (:map eglot-mode-map
+		("C-c r" . eglot-rename)
+		("C-c F" . eglot-code-action-organize-imports)
+		("C-c f" . eglot-format)
+		("C-c h" . eldoc))
+    :config
+    (setq eldoc-echo-area-use-multiline-p nil)
+    (define-key eglot-mode-map [remap display-local-help] nil))
+#+end_src
 
 ** Python
 
-   #+begin_src emacs-lisp
-     (use-package python
-       :hook (python-mode . eglot-ensure)
-       :config
-       (when (executable-find "ipython")
-	 (setq python-shell-interpreter "ipython"
-	       python-shell-interpreter-args "-i --simple-prompt"))
-       (setq python-indent-def-block-scale 1))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package python
+    :hook (python-mode . eglot-ensure)
+    :config
+    (when (executable-find "ipython")
+      (setq python-shell-interpreter "ipython"
+	    python-shell-interpreter-args "-i --simple-prompt"))
+    (setq python-indent-def-block-scale 1))
+#+end_src
 
 ** LaTeX
 
-   #+begin_src emacs-lisp
-     (use-package tex
-       :ensure auctex
-       :hook ((LaTeX-mode . LaTeX-math-mode)
-	      (LaTeX-mode . reftex-mode)
-	      (LaTeX-mode . prettify-symbols-mode)
-	      (LaTeX-mode . eglot-ensure))
-       :init
-       (setq TeX-parse-self t
-	     TeX-save-query nil
-	     TeX-view-program-selection '((output-pdf "PDF Tools"))
-	     TeX-master t
-	     TeX-source-correlate-mode t
-	     TeX-source-correlate-start-server t)
-       (add-hook 'TeX-after-compilation-finished-functions
-		 #'TeX-revert-document-buffer))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package tex
+    :ensure auctex
+    :hook ((LaTeX-mode . LaTeX-math-mode)
+	   (LaTeX-mode . reftex-mode)
+	   (LaTeX-mode . prettify-symbols-mode)
+	   (LaTeX-mode . eglot-ensure))
+    :init
+    (setq TeX-parse-self t
+	  TeX-save-query nil
+	  TeX-view-program-selection '((output-pdf "PDF Tools"))
+	  TeX-master t
+	  TeX-source-correlate-mode t
+	  TeX-source-correlate-start-server t)
+    (add-hook 'TeX-after-compilation-finished-functions
+	      #'TeX-revert-document-buffer))
+#+end_src
+
 Replace =docview= with =pdf-tools=.
 
 #+begin_src emacs-lisp
@@ -601,30 +602,30 @@ Replace =docview= with =pdf-tools=.
 
 ** Haskell
 
-   #+begin_src emacs-lisp
-     (use-package haskell-mode
-       :hook (haskell-mode . interactive-haskell-mode)
-       :bind (:map haskell-mode-map
-		   ("C-c h" . haskell-hoogle))
-       :init
-       (setq haskell-hoogle-command "hoogle")
-       (require 'haskell-interactive-mode)
-       (require 'haskell-process))
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :hook (haskell-mode . interactive-haskell-mode)
+    :bind (:map haskell-mode-map
+		("C-c h" . haskell-hoogle))
+    :init
+    (setq haskell-hoogle-command "hoogle")
+    (require 'haskell-interactive-mode)
+    (require 'haskell-process))
 
-     (use-package hindent
-       :hook (haskell-mode . hindent-mode))
+  (use-package hindent
+    :hook (haskell-mode . hindent-mode))
 
-     (use-package elisp-slime-nav
-       :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode))
-   #+end_src
+  (use-package elisp-slime-nav
+    :hook ((emacs-lisp-mode ielm-mode) . elisp-slime-nav-mode))
+#+end_src
 
 ** Lisp
 
-   #+begin_src emacs-lisp
-     (use-package slime
-       :config
-       (require 'slime-autoloads)
-       (slime-setup '(slime-fancy slime-company))
-       (setq slime-net-coding-system 'utf-8-unix)
-       (setq inferior-lisp-program "sbcl"))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package slime
+    :config
+    (require 'slime-autoloads)
+    (slime-setup '(slime-fancy slime-company))
+    (setq slime-net-coding-system 'utf-8-unix)
+    (setq inferior-lisp-program "sbcl"))
+#+end_src
