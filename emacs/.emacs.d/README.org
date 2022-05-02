@@ -46,7 +46,7 @@ Set personal information.
 
   (setq frame-resize-pixelwise t)
 
-  (setq-default word-wrap t)
+  (global-visual-line-mode t)
 #+end_src
 
 ** Theme
