@@ -590,6 +590,14 @@
        (add-hook 'TeX-after-compilation-finished-functions
 		 #'TeX-revert-document-buffer))
    #+end_src
+Replace =docview= with =pdf-tools=.
+
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :config
+    (setq pdf-view-use-scaling t)
+    (pdf-loader-install))
+#+end_src
 
 ** Haskell
 
