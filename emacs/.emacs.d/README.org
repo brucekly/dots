@@ -181,7 +181,26 @@
      (global-set-key (kbd "M-/") #'hippie-expand)
      (global-set-key (kbd "M-o") #'other-window)
      (global-set-key (kbd "C-M-r") #'raise-sexp)
-     (global-set-key (kbd "C-c s") #'shell)
+   #+end_src
+
+** Window movement and transposition
+
+   Bind keys for moving and swapping windows.
+
+   #+begin_src emacs-lisp
+     (use-package windmove
+       :ensure nil
+       :config
+       (windmove-default-keybindings)
+       (windmove-swap-states-default-keybindings '(ctrl shift)))
+   #+end_src
+
+   Change frame layouts with =transpose-frame=.
+
+   #+begin_src emacs-lisp
+     (use-package transpose-frame
+       :bind
+       ("C-x M-r" . rotate-frame-clockwise))
    #+end_src
 
 ** =exec-path-from-shell=
@@ -368,6 +387,10 @@
 	    org-agenda-files "~/org/agenda-files.txt"
 	    org-enforce-todo-dependencies t
 	    org-enforce-todo-checkbox-dependencies t)
+      (add-hook 'org-shiftup-final-hook 'windmove-up)
+      (add-hook 'org-shiftleft-final-hook 'windmove-left)
+      (add-hook 'org-shiftdown-final-hook 'windmove-down)
+      (add-hook 'org-shiftright-final-hook 'windmove-right)
       (add-to-list 'org-structure-template-alist
 		   '("el" . "src emacs-lisp")))
   #+end_src
