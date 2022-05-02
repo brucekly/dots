@@ -380,6 +380,13 @@
      (use-package restclient)
    #+end_src
 
+** Olivetti
+
+   #+begin_src emacs-lisp
+     (use-package olivetti
+       :bind ("C-c o" . olivetti-mode))
+   #+end_src
+
 * Org
 
   #+begin_src emacs-lisp
@@ -543,7 +550,7 @@
      (use-package eglot
        :bind (:map eglot-mode-map
 		   ("C-c r" . eglot-rename)
-		   ("C-c o" . eglot-code-action-organize-imports)
+		   ("C-c F" . eglot-code-action-organize-imports)
 		   ("C-c f" . eglot-format)
 		   ("C-c h" . eldoc))
        :config
