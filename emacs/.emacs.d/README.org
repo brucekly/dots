@@ -361,7 +361,9 @@ Corfu displays completion-at-point results in a child frame.
 #+begin_src emacs-lisp
   (use-package magit
     :bind (("C-x g" . magit)
-	   ("C-x M-g" . magit-dispatch)))
+	   ("C-x M-g" . magit-dispatch))
+    :init
+    (setq magit-diff-refine-hunk t))
 #+end_src
 
 ** Projectile
