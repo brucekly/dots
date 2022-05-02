@@ -491,7 +491,7 @@
       (setq mu4e-context-policy 'pick-first
 	    mu4e-compose-context-policy 'always-ask)
 
-      (setq mu4e-get-mail-command "mbsync -a")
+      (setq mu4e-get-mail-command "true")
 
       (require 'smtpmail)
       (setq sendmail-program "msmtp"
