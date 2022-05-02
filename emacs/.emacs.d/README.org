@@ -340,6 +340,14 @@
      (setq tab-always-indent 'complete)
    #+end_src
 
+   #+begin_src emacs-lisp
+     (use-package cape
+       :config
+       (setq cape-dabbrev-min-length 3)
+       (dolist (backend '(cape-symbol cape-keyword cape-file cape-dabbrev))
+	 (add-to-list 'completion-at-point-functions backend)))
+   #+end_src
+
 ** Recent files
 
    #+begin_src emacs-lisp
