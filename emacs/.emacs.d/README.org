@@ -584,11 +584,15 @@ Check that I've attached something before sending a message if I've said I will.
     (setq TeX-parse-self t
 	  TeX-save-query nil
 	  TeX-view-program-selection '((output-pdf "PDF Tools"))
-	  TeX-master t
+	  TeX-master nil
 	  TeX-source-correlate-mode t
 	  TeX-source-correlate-start-server t)
     (add-hook 'TeX-after-compilation-finished-functions
-	      #'TeX-revert-document-buffer))
+	      #'TeX-revert-document-buffer)
+    ;; remove built-in `chktex' flymake backend
+    (defun disable-latex-flymake ()
+      (remove-hook 'flymake-diagnostic-functions #'LaTeX-flymake))
+    (advice-add #'TeX-latex-mode :after #'disable-latex-flymake))
 #+end_src
 
 Replace =docview= with =pdf-tools=.
