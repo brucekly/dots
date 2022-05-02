@@ -197,13 +197,12 @@
 
 ** Mac changes
 
-   Use command as the meta key on macOS, and unbind option to make inserting special characters easier.
-   Also enable the menu bar, since it doesn't take up extra room on macOS.
+   Use command as the meta key on macOS, and unbind option to make inserting special characters easier. Also enable the menu bar, since it doesn't take up extra room on macOS.
 
    #+begin_src emacs-lisp
      (when (eq system-type 'darwin)
        (setq mac-command-modifier 'meta
-	     mac-option-modifier 'none
+	     mac-option-modifier 'meta
 	     ns-function-modifier 'hyper
 	     mac-pass-command-to-system nil)
        (menu-bar-mode t))
