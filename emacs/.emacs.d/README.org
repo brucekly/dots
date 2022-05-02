@@ -362,9 +362,7 @@
    #+begin_src emacs-lisp
      (use-package magit
        :bind (("C-x g" . magit)
-	      ("C-x M-g" . magit-dispatch))
-       :init
-       (setq magit-diff-refine-hunk 'all))
+	      ("C-x M-g" . magit-dispatch)))
    #+end_src
 
 ** Projectile
