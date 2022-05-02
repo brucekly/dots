@@ -251,34 +251,24 @@
 
    #+begin_src emacs-lisp
      (use-package consult
-       :bind (("C-x b" . consult-buffer)
-	      ("M-y" . consult-yank-pop)
-	      ("<help> a" . consult-apropos)
-	      ("M-g e" . consult-compile-error)
-	      ("M-g g" . consult-goto-line)
-	      ("M-g M-g" . consult-goto-line)
-	      ("M-g o" . consult-outline)
-	      ("M-g m" . consult-mark)
-	      ("M-g k" . consult-global-mark)
-	      ("M-g i" . consult-imenu)
-	      ("M-g I" . consult-imenu-multi)
-	      ("M-g f" . consult-flymake)
-	      ("M-s d" . consult-find)
-	      ("M-s D" . consult-locate)
-	      ("M-s g" . consult-grep)
-	      ("M-s G" . consult-git-grep)
-	      ("M-s r" . consult-ripgrep)
-	      ("M-s l" . consult-line)
-	      ("M-s L" . consult-line-multi)
-	      ("M-s m" . consult-multi-occur)
-	      ("M-s k" . consult-keep-lines)
-	      ("M-s u" . consult-focus-lines)
-	      ("M-s e" . consult-isearch-history)
-	      :map isearch-mode-map
-	      ("M-e" . consult-isearch-history)
-	      ("M-s e" . consult-isearch-history)
-	      ("M-s l" . consult-line)
-	      ("M-s L" . consult-line-multi))
+       :bind
+       (("C-x r b" . consult-bookmark)
+	("C-x M-:" . consult-complex-command)
+	("C-x M-m" . consult-minor-mode-menu)
+	("C-x M-k" . consult-kmacro)
+	([remap goto-line] . consult-goto-line)
+	("M-K" . consult-keep-lines)
+	("M-F" . consult-focus-lines)
+	("M-s M-b" . consult-buffer)
+	("M-s M-f" . consult-find)
+	("M-s M-g" . consult-grep)
+	("M-s M-h" . consult-history)
+	("M-s M-i" . consult-imenu)
+	("M-s M-l" . consult-line)
+	("M-s M-m" . consult-mark)
+	("M-s M-s" . consult-outline)
+	("M-s M-y" . consult-yank-pop)
+	("C-x r r" . consult-register))
        :init
        (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
        (setq xref-show-xrefs-function #'consult-xref
@@ -298,8 +288,7 @@
 	      ("C-x C-d" . consult-dir)
 	      ("C-x C-j" . consult-dir-jump-file))
        :config
-       (setq consult-dir-project-list-function nil
-	     consult-dir-project-list-function #'consult-dir-projectile-dirs))
+       (setq consult-dir-project-list-function #'consult-dir-projectile-dirs))
    #+end_src
 
    Embark provides a contextual menu for emacs which integrates with consult.
