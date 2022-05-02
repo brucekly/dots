@@ -1,5 +1,4 @@
 #+TITLE: Emacs configuration
-#+STARTUP: content
 
 * Starting up
 
@@ -539,7 +538,7 @@
     (add-hook 'message-send-hook #'message-warn-if-no-attachments)
   #+end_src
 
-* Coding
+* Languages
 ** LSP
 
    #+begin_src emacs-lisp
