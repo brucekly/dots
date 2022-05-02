@@ -283,6 +283,7 @@ Consult provides a lot of useful commands based on =completing-read=.
      ("M-K" . consult-keep-lines)
      ("M-F" . consult-focus-lines)
      ("M-s M-b" . consult-buffer)
+     ("M-s M-e" . consult-flymake)
      ("M-s M-f" . consult-find)
      ("M-s M-g" . consult-grep)
      ("M-s M-h" . consult-history)
@@ -299,13 +300,10 @@ Consult provides a lot of useful commands based on =completing-read=.
     (setq consult-project-function (lambda (_) (projectile-project-root))))
 #+end_src
 
-Load some consult extensions.
-The package =consult-dir= provides a directory jumper, like =z= in the shell, but for emacs.
-Consult comes with a binding to search =flymake= errors, but I use =flycheck= instead.
+Load some consult extensions. The package =consult-dir= provides a directory jumper, like =z= in the shell, but for emacs.
 
 #+begin_src elisp
   (use-package consult-dir
-    :after consult
     :bind (("C-x C-d" . consult-dir)
 	   :map minibuffer-local-completion-map
 	   ("C-x C-d" . consult-dir)
