@@ -69,19 +69,18 @@
        (modus-themes-load-operandi))
    #+end_src
 
-** Diminish
+** Minions
 
-   Hide clutter from the modeline.
+   Hide minor modes from the modeline
 
    #+begin_src emacs-lisp
-     (use-package diminish
+     (use-package minions
        :config
-       (eval-after-load "yasnippet" '(diminish 'yas-minor-mode))
-       (eval-after-load "eldoc" '(diminish 'eldoc-mode))
-       (eval-after-load "elisp-slime-nav" '(diminish 'elisp-slime-nav-mode))
-       (eval-after-load "whitespace-cleanup-mode" '(diminish 'whitespace-cleanup-mode))
-       (eval-after-load "subword" '(diminish 'subword-mode))
-       (eval-after-load "anzu" '(diminish 'anzu-mode)))
+       (setq minions-mode-line-lighter ";")
+       (setq minions-prominent-modes
+	     '(defining-kbd-macro
+		flymake-mode))
+       (minions-mode t))
    #+end_src
 
 * Defuns
