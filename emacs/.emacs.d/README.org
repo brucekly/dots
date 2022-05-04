@@ -180,8 +180,17 @@ Keep backups inside =~/.emacs.d/= instead of the working directory, and keep aut
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "M-/") #'hippie-expand)
-  (global-set-key (kbd "M-o") #'other-window)
   (global-set-key (kbd "C-M-r") #'raise-sexp)
+#+end_src
+
+** Repeating commands
+
+Use the new =repeat-mode= in Emacs 28 to repeat commands with the last key of a chord.
+
+#+begin_src emacs-lisp
+  (use-package repeat
+    :config
+    (repeat-mode t))
 #+end_src
 
 ** Window movement and transposition
