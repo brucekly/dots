@@ -613,11 +613,12 @@ Replace =docview= with =pdf-tools=.
     (pdf-loader-install))
 #+end_src
 
-Add CDLaTeX for fast insertion of maths stuff.
+Use =laas= for fast insertion of maths stuff.
 
 #+begin_src emacs-lisp
-  (use-package cdlatex
-    :hook (LaTeX-mode . turn-on-cdlatex))
+  (use-package laas
+    :hook (LaTeX-mode . laas-mode))
+
 #+end_src
 
 ** Haskell
