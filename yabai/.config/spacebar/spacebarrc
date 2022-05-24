@@ -13,37 +13,37 @@ spacebar -m config spacing_right 20
 spacebar -m config text_font "DejaVu Sans Mono:Normal:12.0"
 spacebar -m config icon_font "DejaVu Sans Mono:Normal:12.0"
 
-spacebar -m config background_color 0xffffffff
-spacebar -m config foreground_color 0xff000000
+spacebar -m config background_color 0xff000000
+spacebar -m config foreground_color 0xffffffff
 
 spacebar -m config power on
 spacebar -m config power_icon_strip DISCHARGING CHARGING
-spacebar -m config power_icon_color 0xff74507a
-spacebar -m config battery_icon_color 0xffcc0000
+spacebar -m config power_icon_color 0xfffeacd0
+spacebar -m config battery_icon_color 0xffff8059
 
 spacebar -m config spaces on
 spacebar -m config space_icon =
-spacebar -m config space_icon_color 0xffcc0000
+spacebar -m config space_icon_color 0xffff8059
 spacebar -m config spaces_for_all_displays off
 spacebar -m config space_icon_strip 1 2 3 4 5 6 7 8 9 10
 
 spacebar -m config clock on
 spacebar -m config clock_icon CLOCK
-spacebar -m config clock_icon_color 0xff4e9a05
+spacebar -m config clock_icon_color 0xff44bc44
 spacebar -m config clock_format "%R, %a %d %B"
 
 spacebar -m config dnd on
 spacebar -m config dnd_icon DND
-spacebar -m config dnd_icon_color 0xffcc0000
+spacebar -m config dnd_icon_color 0xffcc6666
 
 spacebar -m config left_shell on
 spacebar -m config left_shell_icon WIFI
-spacebar -m config left_shell_icon_color 0xff4e9a05
+spacebar -m config left_shell_icon_color 0xff44bc44
 spacebar -m config left_shell_command "$HOME/.config/spacebar/network"
 
 spacebar -m config right_shell on
 spacebar -m config right_shell_icon MAIL
-spacebar -m config right_shell_icon_color 0xff05989a
+spacebar -m config right_shell_icon_color 0xff00d3d0
 spacebar -m config right_shell_command "$HOME/.config/spacebar/mail"
 
 spacebar -m config center_shell on

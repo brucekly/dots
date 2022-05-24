@@ -67,7 +67,7 @@ Set a nice font and theme.
     (setq x-underline-at-descent-line t)
     (modus-themes-load-themes)
     :config
-    (modus-themes-load-operandi))
+    (modus-themes-load-vivendi))
 #+end_src
 
 ** Minions
