@@ -396,8 +396,7 @@ Check spelling on-the-fly.
 
 #+begin_src emacs-lisp
   (use-package flyspell
-    :hook ((text-mode . flyspell-mode)
-	   (prog-mode . flyspell-prog-mode)))
+    :hook ((text-mode . flyspell-mode)))
 #+end_src
 
 ** Olivetti
