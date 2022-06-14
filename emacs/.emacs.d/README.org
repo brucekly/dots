@@ -54,9 +54,9 @@ Set personal information.
 Set a nice font and theme.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "DejaVu Sans Mono-12")
-  (set-face-attribute 'fixed-pitch nil :font "DejaVu Sans Mono-12")
-  (set-face-attribute 'variable-pitch nil :font "DejaVu Sans-13")
+  (set-face-attribute 'default nil :font "Iosevka Fixed-12")
+  (set-face-attribute 'fixed-pitch nil :font "Iosevka Fixed-12")
+  (set-face-attribute 'variable-pitch nil :font "Open Sans-13")
 
   (use-package modus-themes
     :init
