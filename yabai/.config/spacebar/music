@@ -1,14 +1,22 @@
 #!/usr/bin/env osascript
+if application "Spotify" is running then
+  tell application "Spotify"
+    if player state is not stopped then
+      return name of current track & " - " & artist of current track
+    end if
+  end tell
+end if
+
 if application "Music" is running then
-   tell application "Music"
-	if exists current track then
-	    if composer of current track is not equal to "" then
-		return name of current track & " - " & composer of current track
-	    else
-		return name of current track & " - " & artist of current track
-	    end if
-	end if
-   end tell
+  tell application "Music"
+    if exists current track then
+      if composer of current track is not equal to "" then
+	return name of current track & " - " & composer of current track
+      else
+	return name of current track & " - " & artist of current track
+      end if
+    end if
+  end tell
 end if
 
 return "Nothing playing"
