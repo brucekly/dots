@@ -494,7 +494,7 @@ I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 		   (when msg
 		     (string-prefix-p "/university"
 				      (mu4e-message-field msg :maildir))))
-		 :vars '((user-mail-address . "s2079454@ed.ac.uk")
+		 :vars '((user-mail-address . "L.R.McPhail@sms.ed.ac.uk")
 			 (mu4e-sent-folder . "/university/Sent Items")
 			 (mu4e-trash-folder . "/university/Deleted Items")
 			 (mu4e-drafts-folder . "/university/Drafts")
