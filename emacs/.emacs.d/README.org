@@ -654,7 +654,7 @@ Use =laas= for fast insertion of maths stuff.
   (use-package slime
     :config
     (require 'slime-autoloads)
-    (slime-setup '(slime-fancy slime-company))
+    (slime-setup '(slime-fancy))
     (setq slime-net-coding-system 'utf-8-unix)
     (setq inferior-lisp-program "sbcl"))
 #+end_src
