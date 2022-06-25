@@ -40,6 +40,15 @@ function zle_fg {
 zle -N zle_fg
 bindkey "^z" zle_fg
 
+# FZF
+export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d'
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+bindkey '^X^T' fzf-file-widget
+bindkey '^T' transpose-chars
+
 export CLICOLOR=1
 
 if command -v pyenv 1>/dev/null 2>&1; then
