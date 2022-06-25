@@ -63,6 +63,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 
+Plug 'tmsvg/pear-tree'
 Plug 'tommcdo/vim-lion'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jpalardy/vim-slime'
