@@ -63,6 +63,9 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 Plug 'tmsvg/pear-tree'
 Plug 'tommcdo/vim-lion'
 Plug 'editorconfig/editorconfig-vim'
@@ -95,12 +98,18 @@ let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 let mapleader="\<Space>"
 let maplocalleader="\<Bslash>"
 
-nnoremap <leader>b :b <C-d>
+nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>f :find *
 nnoremap <leader>g :G<CR>
 nnoremap <leader>j :tjump /
 nnoremap <leader>m :make<CR>
+
+" FZF
+nnoremap <leader>fc :Commits<CR>
+nnoremap <leader>ff :Files<CR>
+nnoremap <leader>fg :Rg<CR>
+nnoremap <leader>ft :Tags<CR>
+nnoremap <leader>fv :GFiles<CR>
 
 " EditorConfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
