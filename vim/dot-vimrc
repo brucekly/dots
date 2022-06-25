@@ -49,6 +49,8 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+Plug 'nanotech/jellybeans.vim'
+
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
@@ -67,6 +69,11 @@ Plug 'jpalardy/vim-slime'
 Plug 'lervag/vimtex'
 
 call plug#end()
+
+" Colours
+color jellybeans
+set background=dark
+set termguicolors
 
 " Status line
 set laststatus=2
