@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 
 # Completion
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}'
@@ -7,14 +7,19 @@ autoload -Uz compinit && compinit
 # Prompt
 autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' enable git svn
-zstyle ':vcs_info:git*' formats "(%b)"
+zstyle ':vcs_info:git*' formats " (%b%u%c)"
+zstyle ':vcs_info:git*' actionformats " (%b%u%c %a)"
+zstyle ':vcs_info:git*' check-for-changes true
+zstyle ':vcs_info:git*' unstagedstr "?"
+zstyle ':vcs_info:git*' stagedstr "+"
 precmd() { vcs_info }
 setopt prompt_subst
-PROMPT='%F{green}%n@%m %F{cyan}%~%F{green}${vcs_info_msg_0_}%F{red}: %f'
+
+PROMPT='%F{cyan}%~%F{green}${vcs_info_msg_0_}%F{red}: %f'
 
 export LANG=en_GB.UTF-8
 
-export EDITOR=vim
+export EDITOR=nvim
 export VISUAL=$EDITOR
 
 export GPG_TTY=$(tty)
