@@ -37,14 +37,14 @@ set ignorecase
 set smartcase
 
 augroup autoSourceVimrc
-  autocmd!
-  autocmd bufwritepost $MYVIMRC source $MYVIMRC
+    autocmd!
+    autocmd bufwritepost $MYVIMRC source $MYVIMRC
 augroup END
 
 " Download vim-plug
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -117,7 +117,11 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 " LaTeX
 let g:tex_flavor = "latex"
 let g:tex_no_error=1
-let g:vimtex_view_method = 'skim'
+if has('macunix')
+    let g:vimtex_view_method = 'skim'
+else
+    let g:vimtex_view_method = 'zathura'
+endif
 
 " SLIME
 let g:slime_target = "tmux"
