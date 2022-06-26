@@ -40,6 +40,10 @@ function zle_fg {
 zle -N zle_fg
 bindkey "^z" zle_fg
 
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^x^e" edit-command-line
+
 # FZF
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
