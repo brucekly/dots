@@ -46,8 +46,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'nanotech/jellybeans.vim'
-
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
@@ -60,12 +58,19 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
 
+Plug 'nanotech/jellybeans.vim'
+
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+Plug 'sheerun/vim-polyglot'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'tmsvg/pear-tree'
 Plug 'tommcdo/vim-lion'
-Plug 'editorconfig/editorconfig-vim'
+
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
 Plug 'jpalardy/vim-slime'
 Plug 'lervag/vimtex'
 
