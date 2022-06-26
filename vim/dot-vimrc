@@ -77,6 +77,10 @@ Plug 'lervag/vimtex'
 call plug#end()
 
 " Colours
+let g:jellybeans_overrides = {
+\    'background': { 'guibg': '000000' },
+\}
+
 color jellybeans
 set background=dark
 set termguicolors
