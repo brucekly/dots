@@ -589,6 +589,18 @@ Check that I've attached something before sending a message if I've said I will.
     (setq python-indent-def-block-scale 1))
 #+end_src
 
+** C
+
+#+begin_src emacs-lisp
+  (defun my-c-mode-common-hook ()
+    (setq c-default-style "k&r"
+	  c-basic-offset 4)
+    (eglot-ensure))
+
+  (use-package cc-mode
+    :hook (c-mode-common . my-c-mode-common-hook))
+#+end_src
+
 ** LaTeX
 
 #+begin_src emacs-lisp
