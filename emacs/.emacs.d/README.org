@@ -390,15 +390,6 @@ Corfu displays completion-at-point results in a child frame.
   (use-package restclient)
 #+end_src
 
-** Flyspell
-
-Check spelling on-the-fly.
-
-#+begin_src emacs-lisp
-  (use-package flyspell
-    :hook ((text-mode . flyspell-mode)))
-#+end_src
-
 ** Olivetti
 
 #+begin_src emacs-lisp
