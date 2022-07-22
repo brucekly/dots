@@ -67,7 +67,6 @@ Plug 'tommcdo/vim-lion'
 
 Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
-Plug 'jpalardy/vim-slime'
 Plug 'lervag/vimtex'
 
 call plug#end()
@@ -119,7 +118,3 @@ if has('macunix')
 else
     let g:vimtex_view_method = 'zathura'
 endif
-
-" SLIME
-let g:slime_target = "tmux"
-let g:slime_python_ipython = 1
