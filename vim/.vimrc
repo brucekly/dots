@@ -100,6 +100,11 @@ nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>g :G<CR>
 nnoremap <leader>m :make<CR>
 
+" Pear tree
+let g:pear_tree_smart_openers = 1
+let g:pear_tree_smart_closers = 1
+let g:pear_tree_smart_backspace = 1
+
 " FZF
 nnoremap <leader>fc :Commits<CR>
 nnoremap <leader>ff :Files<CR>
