@@ -578,10 +578,10 @@ Check that I've attached something before sending a message if I've said I will.
 
   (use-package eglot
     :bind (:map eglot-mode-map
-		("C-c r" . eglot-rename)
-		("C-c F" . eglot-code-action-organize-imports)
-		("C-c f" . eglot-format)
-		("C-c h" . eldoc))
+		("C-c l r" . eglot-rename)
+		("C-c l i" . eglot-code-action-organize-imports)
+		("C-c l f" . eglot-format)
+		("C-c l h" . eldoc))
     :config
     (setq eldoc-echo-area-use-multiline-p nil)
     (define-key eglot-mode-map [remap display-local-help] nil))
