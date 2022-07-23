@@ -64,6 +64,17 @@ Set personal information.
     (modus-themes-load-vivendi))
 #+end_src
 
+** Time
+
+Show time in mode-line.
+
+#+begin_src emacs-lisp
+  (setq display-time-24hr-format t
+	display-time-default-load-average nil)
+
+  (display-time-mode t)
+#+end_src
+
 ** Minions
 
 Hide minor modes from the modeline
