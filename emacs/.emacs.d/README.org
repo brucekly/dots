@@ -51,13 +51,7 @@ Set personal information.
 
 ** Theme
 
-Set a nice font and theme.
-
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Iosevka Fixed-12")
-  (set-face-attribute 'fixed-pitch nil :font "Iosevka Fixed-12")
-  (set-face-attribute 'variable-pitch nil :font "Open Sans-13")
-
   (use-package modus-themes
     :init
     (setq modus-themes-italic-constructs t
@@ -82,6 +76,30 @@ Hide minor modes from the modeline
 	  '(defining-kbd-macro
 	     flymake-mode))
     (minions-mode t))
+#+end_src
+
+** Fontaine
+
+Fontaine allows for quick switching between font presets.
+
+#+begin_src emacs-lisp
+  (use-package fontaine
+    :bind
+    (("C-c f" . #'fontaine-set-preset)
+     ("C-c F" . #'fontaine-set-face-font))
+    :config
+    (setq fontaine-presets
+	  '((regular
+	     :default-family "Iosevka Fixed"
+	     :default-weight regular
+	     :default-height 120
+	     :variable-pitch-family "Open Sans")
+	    (presentation
+	     :default-family "Iosevka Fixed"
+	     :default-weight regular
+	     :default-height 180
+	     :variable-pitch-family "Open Sans")))
+    (fontaine-set-preset 'regular))
 #+end_src
 
 ** =eww=
