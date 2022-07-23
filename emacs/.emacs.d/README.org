@@ -416,6 +416,27 @@ Corfu displays completion-at-point results in a child frame.
     :bind ("C-c o" . olivetti-mode))
 #+end_src
 
+** Logos
+
+#+begin_src emacs-lisp
+  (use-package logos
+    :bind
+    (([remap narrow-to-region] . #'logos-narrow-dwim)
+     ([remap forward-page] . #'logos-forward-page-dwim)
+     ([remap backward-page] . #'logos-backward-page-dwim)
+     ("C-c l" . #'logos-focus-mode))
+    :config
+    (setq logos-outlines-are-pages t)
+    (setq logos-outline-regexp-alist
+	  `((emacs-lisp-mode . "^;;;+ ")
+	    (org-mode . "^\\*+ +")
+	    (markdown-mode . "^\\#+ +")
+	    (t . ,(or outline-regexp logos--page-delimiter))))
+    (setq-default logos-hide-mode-line t
+		  logos-hide-buffer-boundaries t
+		  logos-olivetti t))
+#+end_src
+
 * Org
 
 #+begin_src emacs-lisp
