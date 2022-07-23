@@ -494,7 +494,7 @@ I'm using =mu= and =mu4e= to read mail, =mbsync= for IMAP, and =msmtp= for SMTP.
 #+begin_src emacs-lisp
   (use-package mu4e
     :ensure nil
-    :demand t
+    :if (executable-find "mu")
     :bind ("C-c m" . mu4e)
     :config
     (setq mail-user-agent 'mu4e-user-agent)
