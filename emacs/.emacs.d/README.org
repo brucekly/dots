@@ -137,7 +137,7 @@ https://emacsredux.com/blog/2013/06/21/eval-and-replace/
       (error (message "Invalid expression")
 	     (insert (current-kill 0)))))
 
-  (global-set-key (kbd "C-c e") #'eval-and-replace)
+  (global-set-key (kbd "C-c C-e") #'eval-and-replace)
 #+end_src
 
 ** Increment numbers
