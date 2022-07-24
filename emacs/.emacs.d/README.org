@@ -105,12 +105,12 @@ Fontaine allows for quick switching between font presets.
 	     :default-family "Iosevka Fixed"
 	     :default-weight regular
 	     :default-height 120
-	     :variable-pitch-family "Open Sans")
+	     :variable-pitch-family "Noto Sans")
 	    (presentation
 	     :default-family "Iosevka Fixed"
 	     :default-weight regular
-	     :default-height 180
-	     :variable-pitch-family "Open Sans")))
+	     :default-height 240
+	     :variable-pitch-family "Noto Sans")))
     (fontaine-set-preset 'regular))
 #+end_src
 
