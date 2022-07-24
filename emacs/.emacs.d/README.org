@@ -602,6 +602,21 @@ Check that I've attached something before sending a message if I've said I will.
   (add-hook 'message-send-hook #'message-warn-if-no-attachments)
 #+end_src
 
+Show new mail with =display-time-mode=.
+
+#+begin_src emacs-lisp
+  (defun new-mail? ()
+    (> 0
+       (string-to-number
+	(shell-command-to-string
+	 (let ((maildir "$HOME/Mail/*/INBOX/new/"))
+	   (concat "find "
+		   maildir
+		   " -type f | wc -l | sed 's/ //g'"))))))
+
+  (setq display-time-mail-function #'new-mail?)
+#+end_src
+
 * Languages
 ** LSP
 
