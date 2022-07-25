@@ -2,9 +2,17 @@
 ;; -*- lexical-binding: t; -*-
 
 (require 'package)
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
+
+(setq package-archives
+      '(("elpa" . "https://elpa.gnu.org/packages/")
+	("elpa-devel" . "https://elpa.gnu.org/devel/")
+	("nongnu" . "https://elpa.nongnu.org/nongnu/")
+	("melpa" . "https://melpa.org/packages/")))
+
+(setq package-archive-priorities
+      '(("elpa" . 2)
+	("nongnu" . 1)))
+
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
