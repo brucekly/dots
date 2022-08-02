@@ -1,24 +1,25 @@
-;; init.el
-;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: t -*-
 
-(require 'package)
+(setq user-full-name "Lucy McPhail"
+      user-mail-address "lucy.mcphail.p@gmail.com")
 
-(setq package-archives
-      '(("elpa" . "https://elpa.gnu.org/packages/")
-	("elpa-devel" . "https://elpa.gnu.org/devel/")
-	("nongnu" . "https://elpa.nongnu.org/nongnu/")
-	("melpa" . "https://melpa.org/packages/")))
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(unless (file-exists-p custom-file)
+  (with-temp-buffer (write-file custom-file)))
+(load custom-file)
 
-(setq package-archive-priorities
-      '(("elpa" . 2)
-	("nongnu" . 1)))
+(add-to-list 'load-path (locate-user-emacs-file "lucy-lisp"))
 
-(package-initialize)
+(when (equal system-type 'darwin) (require 'lucy-mac))
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(setq vc-follow-symlinks t)
-
-(org-babel-load-file (expand-file-name "README.org" user-emacs-directory))
+(require 'lucy-essentials)
+(require 'lucy-appearance)
+(require 'lucy-completion)
+(require 'lucy-window)
+(require 'lucy-git)
+(require 'lucy-mail)
+(require 'lucy-org)
+(require 'lucy-tex)
+(require 'lucy-lsp)
+(require 'lucy-langs)
+(require 'lucy-writing)
