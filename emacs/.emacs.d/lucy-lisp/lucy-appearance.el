@@ -31,6 +31,7 @@
   (setq minions-mode-line-lighter ";")
   (setq minions-prominent-modes
 	(list 'defining-kbd-macro
+	      'narrow-mode
 	      'flymake-mode
 	      'flycheck-mode
 	      'projectile-mode))
