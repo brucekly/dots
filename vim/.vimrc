@@ -57,8 +57,6 @@ Plug 'tpope/vim-vinegar'
 Plug 'nanotech/jellybeans.vim'
 
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 
 Plug 'sheerun/vim-polyglot'
 Plug 'editorconfig/editorconfig-vim'
@@ -104,13 +102,6 @@ nnoremap <leader>m :make<CR>
 let g:pear_tree_smart_openers = 1
 let g:pear_tree_smart_closers = 1
 let g:pear_tree_smart_backspace = 1
-
-" FZF
-nnoremap <leader>fc :Commits<CR>
-nnoremap <leader>ff :Files<CR>
-nnoremap <leader>fg :Rg<CR>
-nnoremap <leader>ft :Tags<CR>
-nnoremap <leader>fv :GFiles<CR>
 
 " EditorConfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']

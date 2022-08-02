@@ -44,15 +44,6 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
-# FZF
-export FZF_DEFAULT_COMMAND='fd --type f'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_ALT_C_COMMAND='fd --type d'
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-bindkey '^X^T' fzf-file-widget
-bindkey '^T' transpose-chars
-
 export CLICOLOR=1
 
 if command -v pyenv 1>/dev/null 2>&1; then
