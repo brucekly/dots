@@ -7,14 +7,12 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(setq inhibit-splash-screen t)
+(setq inhibit-startup-screen t)
 (setq use-dialog-box nil)
 (setq use-file-dialog nil)
 
 (tooltip-mode -1)
 (blink-cursor-mode -1)
-
-(setq inhibit-startup-screen t)
 
 (setq native-comp-async-report-warnings-errors 'silent)
 
