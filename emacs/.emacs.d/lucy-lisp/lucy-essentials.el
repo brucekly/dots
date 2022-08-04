@@ -22,6 +22,7 @@
 (let ((map global-map))
   (define-key map [remap dabbrev-expand] #'hippie-expand)
   (define-key map [remap zap-to-char] #'zap-up-to-char)
+  (define-key map (kbd "C-x K") #'kill-this-buffer)
   (define-key map (kbd "C-M-r") #'raise-sexp))
 
 (repeat-mode t)
