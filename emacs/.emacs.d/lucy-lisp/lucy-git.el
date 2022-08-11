@@ -13,9 +13,7 @@
    (lambda ()
      (format " P[%s]" (projectile-project-name))))
   :config
-  (projectile-mode t)
-  (add-to-list 'projectile-globally-ignored-directories
-	       "^\\./straight/$"))
+  (projectile-mode t))
 
 (use-package magit
   :bind
