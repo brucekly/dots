@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+notmuch tag --batch <<EOF
++inbox -- folder:gmail/INBOX or folder:university/INBOX
+-inbox -- not folder:gmail/INBOX and not folder:university/INBOX
++spam -- folder:gmail/\[Gmail\]/Spam or folder:university/Junk\ Email
+-spam -- not folder:gmail/\[Gmail\]/Spam and not folder:university/Junk\ Email
+EOF
