@@ -48,7 +48,7 @@
 	'((regular
 	   :default-family "Iosevka Fixed"
 	   :default-weight regular
-	   :default-height 110
+	   :default-height 120
 	   :variable-pitch-family "Noto Sans")
 	  (presentation
 	   :default-family "Iosevka Fixed"
