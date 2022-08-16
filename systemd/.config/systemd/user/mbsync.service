@@ -1,0 +1,12 @@
+[Unit]
+Description=Mailbox synchronization service
+
+[Service]
+Type=oneshot
+ExecStartPre=~/.config/notmuch/default/pre-sync.sh
+ExecStart=/usr/bin/mbsync -Va
+ExecStartPost=/usr/bin/mu index
+ExecStartPost=/usr/bin/notmuch new
+
+[Install]
+WantedBy=default.target
