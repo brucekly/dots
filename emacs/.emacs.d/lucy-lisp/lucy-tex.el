@@ -23,7 +23,6 @@
 
 (use-package pdf-tools
   :config
-  (setq pdf-view-use-scaling t)
   (pdf-loader-install))
 
 (use-package laas
