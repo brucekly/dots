@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Emacs (Client) (Mail)
+GenericName=Text Editor
+Comment=Edit text
+MimeType=x-scheme-handler/mailto;
+Exec=emacsclient -c -a "emacs" --eval '(progn (notmuch-mua-mail "%u") (select-frame-set-input-focus (selected-frame)))'
+Icon=emacs
+Type=Application
+Terminal=false
+Categories=Network;Email;
